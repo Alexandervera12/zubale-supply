@@ -630,7 +630,7 @@
 const { useState, useEffect, useRef } = React;
 
 
-const GAS_URL = "https://script.google.com/macros/s/AKfycbyFPsckHXceDLOIk9VOqe1bu85_9WmXJinXANJFo7GymGpntij6hmEiURSYFu8DnrXH/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwnuOQgmtmqOBEOLcZQenPy8hvm7Lm1fHUnygIWLYgtUEt_AXzUekYBfwTqSf_42-rh/exec";
 
 const ROLE_EMOJI = { Picker: "🛒", Shopper: "🛍️", Driver: "🚙" };
 const ROLE_ICONS = { Picker: "📋", Shopper: "🛍️", Driver: "🚗" };
@@ -745,32 +745,57 @@ function Modal({ store, role, onClose, onSubmit }) {
             <>
               <p className="input-label" style={{marginBottom:14}}>¿Cuándo querés asistir?</p>
 
-              {fechasKeys.map(fecha => (
-                <div key={fecha} className="fecha-group">
-                  <div className="fecha-titulo">📅 {formatFecha(fecha)}</div>
-                  <div className="turno-row">
-                    {fechas[fecha].length > 0 ? (
-                      fechas[fecha].map(turno => (
-                        <button
-                          key={turno}
-                          className={`turno-btn ${fechaElegida === fecha && turnoElegido === turno ? "active" : ""}`}
-                          onClick={() => { setFechaElegida(fecha); setTurnoElegido(turno); }}
-                        >
-                          {turno}
-                        </button>
-                      ))
-                    ) : (
-                      /* Sin turnos definidos — solo fecha */
-                      <button
-                        className={`turno-btn ${fechaElegida === fecha ? "active" : ""}`}
-                        onClick={() => { setFechaElegida(fecha); setTurnoElegido(null); }}
-                      >
-                        Disponible
-                      </button>
-                    )}
-                  </div>
+              {fechasKeys.length === 0 ? (
+                <div style={{
+                  textAlign: "center",
+                  padding: "24px 0 16px",
+                  color: "#6B7A9A",
+                  fontSize: "14px"
+                }}>
+                  <div style={{fontSize:"36px", marginBottom:"10px"}}>📅</div>
+                  <strong style={{display:"block", marginBottom:"4px", color:"#1A2340"}}>Sin fechas disponibles</strong>
+                  No hay citas configuradas para esta sala en este momento. Volvé a intentarlo más tarde.
                 </div>
-              ))}
+              ) : (
+                fechasKeys.map(fecha => (
+                  <div key={fecha} className="fecha-group">
+                    <div className="fecha-titulo">📅 {formatFecha(fecha)}</div>
+                    <div className="turno-row">
+                      {fechas[fecha].length > 0 ? (
+                        fechas[fecha].map(turno => (
+                          <button
+                            key={turno}
+                            className={`turno-btn ${fechaElegida === fecha && turnoElegido === turno ? "active" : ""}`}
+                            onClick={() => { setFechaElegida(fecha); setTurnoElegido(turno); }}
+                          >
+                            {turno}
+                          </button>
+                        ))
+                      ) : (
+                        <button
+                          className={`turno-btn ${fechaElegida === fecha ? "active" : ""}`}
+                          onClick={() => { setFechaElegida(fecha); setTurnoElegido(null); }}
+                        >
+                          Disponible
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+
+              <div style={{
+                marginTop: "14px",
+                marginBottom: "12px",
+                padding: "10px 14px",
+                background: "#F3F6FA",
+                borderRadius: "10px",
+                fontSize: "12px",
+                color: "#6B7A9A",
+                lineHeight: "1.5"
+              }}>
+                ℹ️ Las citas mostradas son las que tenemos disponibles. Si no ves opciones, consultá con tu coordinador.
+              </div>
 
               <button className="btn-cancel" onClick={onClose}>Cancelar</button>
             </>
