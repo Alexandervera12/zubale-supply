@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zubale –</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --zubale-blue:        #1557D6;
+      --zubale-blue2:       #1B4FFF;
+      --zubale-blue-light:  #DBEAFE;
+      --zubale-blue-dark:   #0A1A6B;
+      --zubale-blue-deeper: #0B3BAA;
+      --zubale-gray:        #F3F6FA;
+      --zubale-gray2:       #E5E7EB;
+      --zubale-text:        #1A2340;
+      --zubale-muted:       #6B7A9A;
+      --white:              #FFFFFF;
+      --success:            #10B981;
+      --warning-bg:         #FEF9C3;
+      --warning-border:     #FDE047;
+      --warning-text:       #854D0E;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--zubale-gray);
+      color: var(--zubale-text);
+    }
+
+    #root { min-height: 100vh; }
+
+
+    .header {
+      background: var(--white);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      box-shadow: 0 1px 0 #E5E7EB;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+
+    .header-badge {
+      background: var(--zubale-blue-light);
+      color: var(--zubale-blue);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 99px;
+      border: 1px solid #BFDBFE;
+    }
+
+    /* ============================================
+       HERO SECTION
+    ============================================ */
+    .hero {
+      background: var(--zubale-blue);
+      color: var(--white);
+      padding: 36px 24px 28px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 800;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: 15px;
+      opacity: 0.85;
+      max-width: 480px;
+      margin: 0 auto 28px;
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       ROLE SELECTOR
+    ============================================ */
+    .role-selector {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .role-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.12);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+      letter-spacing: 0.2px;
+    }
+
+    .role-btn:hover {
+      background: rgba(255,255,255,0.22);
+      border-color: rgba(255,255,255,0.6);
+      transform: translateY(-2px);
+    }
+
+    .role-btn.active {
+      background: var(--white);
+      color: var(--zubale-blue);
+      border-color: var(--white);
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+      transform: translateY(-2px);
+    }
+
+    .role-icon { font-size: 18px; }
+
+    /* ============================================
+       MAIN CONTENT
+    ============================================ */
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--zubale-text);
+      margin-bottom: 6px;
+    }
+
+    .section-sub {
+      font-size: 14px;
+      color: var(--zubale-muted);
+      margin-bottom: 24px;
+    }
+
+    /* ============================================
+       CARDS GRID
+    ============================================ */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .cards-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .cards-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    }
+
+    .store-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 22px 16px 18px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      transition: all 0.22s cubic-bezier(.4,0,.2,1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .store-card:hover {
+      border-color: var(--zubale-blue);
+      box-shadow: 0 6px 24px rgba(21,87,214,0.15);
+      transform: translateY(-3px);
+    }
+
+    .store-card:active {
+      transform: scale(0.97);
+    }
+
+    .store-icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: var(--zubale-blue-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      transition: background 0.2s;
+    }
+
+    .store-card:hover .store-icon-wrap {
+      background: var(--zubale-blue);
+    }
+
+    .store-card:hover .store-icon-wrap .store-emoji {
+      filter: brightness(0) invert(1);
+    }
+
+    .store-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--zubale-text);
+      line-height: 1.3;
+    }
+
+    .store-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+      background: var(--zubale-blue-light);
+      color: var(--zubale-blue);
+    }
+
+    .store-cta {
+      font-size: 12px;
+      color: var(--zubale-blue);
+      font-weight: 600;
+    }
+
+    /* ============================================
+       MODAL OVERLAY
+    ============================================ */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(17,9,40,0.55);
+      backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+      animation: fadeIn 0.18s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .modal {
+      background: var(--white);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 420px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+      animation: slideUp 0.22s cubic-bezier(.4,0,.2,1);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)   scale(1); }
+    }
+
+    .modal-header {
+      background: var(--zubale-blue);
+      padding: 24px 24px 20px;
+      color: var(--white);
+    }
+
+    .modal-store-icon {
+      width: 48px; height: 48px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .modal-subtitle {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    .modal-body { padding: 20px 24px 28px; }
+
+    /* WARNING BOX */
+    .warning-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--warning-bg);
+      border: 1.5px solid var(--warning-border);
+      border-radius: 12px;
+      padding: 14px 14px;
+      margin-bottom: 20px;
+    }
+
+    .warning-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+
+    .warning-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--warning-text);
+      line-height: 1.45;
+    }
+
+    /* PHONE INPUT */
+    .input-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--zubale-text);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .input-hint {
+      font-size: 12px;
+      color: var(--zubale-muted);
+      margin-bottom: 10px;
+    }
+
+    .phone-input-wrap {
+      display: flex;
+      align-items: center;
+      border: 2px solid var(--zubale-gray2);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+      margin-bottom: 20px;
+      background: var(--white);
+    }
+
+    .phone-input-wrap:focus-within {
+      border-color: var(--zubale-blue);
+      box-shadow: 0 0 0 3px rgba(21,87,214,0.12);
+    }
+
+    .phone-prefix {
+      padding: 0 14px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--zubale-dark);
+      border-right: 2px solid var(--zubale-gray2);
+      height: 48px;
+      display: flex;
+      align-items: center;
+      background: var(--zubale-gray);
+    }
+
+    .phone-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 0 14px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--zubale-dark);
+      height: 48px;
+      font-family: inherit;
+      letter-spacing: 0.5px;
+    }
+
+    .phone-input::placeholder { color: var(--zubale-muted); font-weight: 400; }
+
+    /* BUTTONS */
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      border: none;
+      background: var(--zubale-blue);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 14px rgba(21,87,214,0.3);
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      transform: translateY(-1px);
+      background: var(--zubale-blue2);
+      box-shadow: 0 6px 20px rgba(21,87,214,0.4);
+    }
+
+    .btn-submit:active:not(:disabled) { transform: scale(0.98); }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-cancel {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 2px solid var(--zubale-gray2);
+      background: var(--white);
+      color: var(--zubale-muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-cancel:hover { border-color: var(--zubale-blue); color: var(--zubale-blue); }
+
+    /* ============================================
+       TOAST NOTIFICATION
+    ============================================ */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(0);
+      background: var(--zubale-blue-dark);
+      color: var(--white);
+      padding: 18px 24px;
+      border-radius: 18px;
+      max-width: 360px;
+      width: calc(100% - 40px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      z-index: 200;
+      animation: toastIn 0.35s cubic-bezier(.4,0,.2,1);
+      border-left: 4px solid var(--success);
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.96); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0)    scale(1); }
+    }
+
+    .toast-icon { font-size: 28px; margin-bottom: 8px; }
+
+    .toast-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--white);
+    }
+
+    .toast-msg {
+      font-size: 13px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* ============================================
+       EMPTY STATE
+    ============================================ */
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--zubale-muted);
+    }
+
+    .empty-icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--zubale-text); }
+    .empty-text  { font-size: 14px; }
+
+    /* ============================================
+       FOOTER
+    ============================================ */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--zubale-muted);
+      font-size: 12px;
+    }
+
+    /* ============================================
+       MISC
+    ============================================ */
+    .pill-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--zubale-blue-light);
+      color: var(--zubale-blue);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 99px;
+      margin-left: 8px;
+    }
+
+    /* ============================================
+       CLIENTE GROUP HEADER
+    ============================================ */
+    .client-group { margin-bottom: 40px; }
+
+    .client-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .client-label {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--zubale-text);
+      white-space: nowrap;
+    }
+
+    .client-divider {
+      flex: 1;
+      height: 1px;
+      background: var(--zubale-gray2);
+    }
+
+    .client-count {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 12px;
+      color: var(--zubale-muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .client-reminder {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: var(--zubale-blue-light);
+      border-left: 3px solid var(--zubale-blue);
+      border-radius: 0 8px 8px 0;
+      font-size: 13px;
+      color: var(--zubale-blue-deeper);
+      line-height: 1.5;
+    }
+
+    /* ── SKELETON LOADING ── */
+    @keyframes shimmer {
+      0%   { background-position: -600px 0; }
+      100% { background-position:  600px 0; }
+    }
+
+    .skeleton-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 22px 16px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .skeleton-block {
+      border-radius: 8px;
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e8ff 50%, #f0f0f0 75%);
+      background-size: 600px 100%;
+      animation: shimmer 1.4s infinite linear;
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+
+/* ⚠️ Reemplazá con la URL del script de Supply cuando lo deploys */
+const GAS_URL = "https://script.google.com/macros/s/TU_ID_SUPPLY/exec";
+
+const ROLE_EMOJI = { Picker: "🛒", Shopper: "🛍️", Driver: "🚙" };
+const ROLE_ICONS = { Picker: "📋", Shopper: "🛍️", Driver: "🚗" };
+
+function Header() {
+  return (
+    <header className="header">
+      <div className="header-logo">
+        <img
+          src="https://www.zubale.com/cl/wp-content/uploads/2023/12/logo_zubale_2023.png"
+          alt="Zubale"
+          style={{ height: "32px", width: "auto", display: "block" }}
+        />
+      </div>
+    </header>
+  );
+}
+
+function StoreCard({ store, onSelect }) {
+  return (
+    <div className="store-card" onClick={() => onSelect(store)}>
+      <div className="store-icon-wrap">
+        <span className="store-emoji">{store.emoji}</span>
+      </div>
+      <div>
+        <div className="store-name">{store.name}</div>
+      </div>
+      <span className="store-cta">Reservar →</span>
+    </div>
+  );
+}
+
+function Modal({ store, role, onClose, onSubmit }) {
+  const [phone, setPhone] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    setTimeout(() => inputRef.current?.focus(), 200);
+    const handleKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
+  const handlePhone = (e) => {
+    const val = e.target.value.replace(/\D/g, "").slice(0, 9);
+    setPhone(val);
+  };
+
+  const handleSubmit = async () => {
+    if (phone.length < 8) return;
+    setSubmitting(true);
+
+    /* ── Enviar datos al Google Apps Script ── */
+    try {
+      await fetch(GAS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          local: store.name,
+          telefono: "569" + phone,
+          rol: role,
+          cliente: store.cliente,
+          fecha: new Date().toLocaleString("es-CL")
+        })
+      });
+    } catch (e) {
+      console.warn("No se pudo conectar al sheet (prototipo):", e.message);
+    }
+
+    setSubmitting(false);
+    onSubmit(store, phone);
+  };
+
+  const isValid = phone.length >= 8;
+
+  return (
+    <div className="overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-header">
+          <div className="modal-store-icon">{store.emoji}</div>
+          <div className="modal-title">{store.name}</div>
+          <div className="modal-subtitle">Confirmar asistencia a sala • {role}</div>
+        </div>
+
+        <div className="modal-body">
+          {/* Warning */}
+          <div className="warning-box">
+            <span className="warning-icon">⚠️</span>
+            <span className="warning-text">
+              Recuerda que esta asistencia es válida <strong>solo por HOY</strong>.
+              Asiste cuanto antes para sumar ganancias.
+            </span>
+          </div>
+
+          {/* Phone input */}
+          <label className="input-label">Número de teléfono</label>
+          <p className="input-hint">Teléfono registrado en tu aplicación Zubale</p>
+
+          <div className="phone-input-wrap">
+            <span className="phone-prefix">🇨🇱 569</span>
+            <input
+              ref={inputRef}
+              type="tel"
+              inputMode="numeric"
+              className="phone-input"
+              placeholder="XXXX XXXX"
+              value={phone}
+              onChange={handlePhone}
+              onKeyDown={(e) => e.key === "Enter" && isValid && handleSubmit()}
+            />
+          </div>
+
+          <button
+            className="btn-submit"
+            onClick={handleSubmit}
+            disabled={!isValid || submitting}
+          >
+            {submitting ? "⏳ Enviando..." : "✅ Confirmar asistencia"}
+          </button>
+          <button className="btn-cancel" onClick={onClose}>Cancelar</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Toast({ store }) {
+  return (
+    <div className="toast">
+      <div className="toast-icon">🎉</div>
+      <div className="toast-title">¡Ya estás reservado para asistir a sala!</div>
+      <div className="toast-msg">
+        Durante el día, tu registro se verá reflejado en tu aplicación de Zubale.
+        Asiste cuanto antes a <strong>{store.name}</strong> para sumar ganancias.
+      </div>
+    </div>
+  );
+}
+
+/* ─── CACHÉ EN MEMORIA (dura lo que dura la sesión) ─────────────── */
+let _storesCache = null;
+
+/* ─── SKELETON de 8 tarjetas mientras carga ─────────────────────── */
+function SkeletonGrid() {
+  return (
+    <div>
+      <div style={{ display:"flex", alignItems:"center", marginBottom:6 }}>
+        <div className="skeleton-block" style={{ width:220, height:22, borderRadius:6 }} />
+        <div className="skeleton-block" style={{ width:80, height:22, borderRadius:99, marginLeft:10 }} />
+      </div>
+      <div className="skeleton-block" style={{ width:280, height:16, borderRadius:6, marginBottom:24 }} />
+      <div className="cards-grid">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="skeleton-card">
+            <div className="skeleton-block" style={{ width:56, height:56, borderRadius:14 }} />
+            <div className="skeleton-block" style={{ width:"80%", height:14, borderRadius:6 }} />
+            <div className="skeleton-block" style={{ width:"50%", height:12, borderRadius:6 }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── APP PRINCIPAL ──────────────────────────────────────────────── */
+function App() {
+  const [role, setRole]           = useState("Picker");
+  const [selected, setSelected]   = useState(null);
+  const [toast, setToast]         = useState(null);
+  const [allStores, setAllStores] = useState(_storesCache); // usa caché si existe
+  const [loadError, setLoadError] = useState(false);
+
+  /* Cargar locales — solo si no hay caché */
+  useEffect(() => {
+    if (_storesCache) return; // ya tenemos datos, no vuelve a pedir
+    fetch(GAS_URL + "?action=getLocales")
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === "ok") {
+          _storesCache = data.locales; // guardar en caché
+          setAllStores(data.locales);
+        } else {
+          setLoadError(true);
+        }
+      })
+      .catch(() => setLoadError(true));
+  }, []);
+
+  /* Construir lista de tarjetas para el rol activo */
+  const clientesDelRol = allStores ? (allStores[role] || {}) : {};
+  const totalLocales   = Object.values(clientesDelRol).reduce((s, arr) => s + arr.length, 0);
+
+  const handleSelect = (store) => setSelected(store);
+  const handleClose  = () => setSelected(null);
+
+  const handleSubmit = (store) => {
+    setSelected(null);
+    setToast(store);
+    setTimeout(() => setToast(null), 10000);
+  };
+
+  return (
+    <>
+      <Header />
+
+      {/* HERO + ROLE SELECTOR — siempre visible de inmediato */}
+      <section className="hero">
+        <h1>Selecciona tu rol y local</h1>
+        <p>Selecciona tu rol y escoge el local donde tenés disponibilidad de asistir hoy. ¡Confirmá con tu número y empezá a ganar!</p>
+
+        <div className="role-selector">
+          {["Picker", "Shopper", "Driver"].map(r => (
+            <button
+              key={r}
+              className={`role-btn ${role === r ? "active" : ""}`}
+              onClick={() => { setRole(r); setSelected(null); }}
+            >
+              {r}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* CARDS */}
+      <main className="main">
+
+        {/* Error */}
+        {loadError && (
+          <div className="empty">
+            <div className="empty-icon">⚠️</div>
+            <div className="empty-title">No pudimos cargar los locales</div>
+            <div className="empty-text">Revisá tu conexión e intentá recargar la página.</div>
+          </div>
+        )}
+
+        {/* Skeleton mientras carga */}
+        {!allStores && !loadError && <SkeletonGrid />}
+
+        {/* Contenido real */}
+        {allStores && (
+          <>
+        <div style={{ display: "flex", alignItems: "center", marginBottom: 6 }}>
+          <span className="section-title">Locales disponibles para ti hoy</span>
+          <span className="pill-count">📍 {totalLocales} {totalLocales === 1 ? "local" : "locales"}</span>
+        </div>
+        <p className="section-sub">
+          Seleccioná el local donde querés asistir como <strong>{role}</strong>.
+        </p>
+
+        {totalLocales > 0 ? (
+          Object.entries(clientesDelRol).map(([cliente, nombres]) => (
+            <div key={cliente} className="client-group">
+              <div className="client-header">
+                <span className="client-label">{cliente}</span>
+                <div className="client-divider" />
+                <span className="client-count">{nombres.length} {nombres.length === 1 ? "local" : "locales"}</span>
+              </div>
+              <div className="cards-grid">
+                {nombres.map((nombre, idx) => (
+                  <StoreCard
+                    key={idx}
+                    store={{ id: idx, name: nombre, emoji: ROLE_EMOJI[role] || "🏪", cliente }}
+                    onSelect={handleSelect}
+                  />
+                ))}
+              </div>
+              <div className="client-reminder">
+                📌 Recuerda que para seleccionar una sala de <strong>{cliente}</strong>, es importante que te encuentres previamente <strong>capacitado</strong>.
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="empty">
+            <div className="empty-icon">🔍</div>
+            <div className="empty-title">Sin locales disponibles hoy</div>
+            <div className="empty-text">Por ahora no hay salas disponibles para <strong>{role}</strong> hoy. Volvé a intentarlo más tarde.</div>
+          </div>
+        )}
+          </>
+        )}
+      </main>
+
+      <footer className="footer">
+        © 2025 Zubale Supply
+      </footer>
+
+      {/* MODAL */}
+      {selected && (
+        <Modal
+          store={selected}
+          role={role}
+          onClose={handleClose}
+          onSubmit={handleSubmit}
+        />
+      )}
+
+      {/* TOAST */}
+      {toast && <Toast store={toast} />}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
