@@ -733,7 +733,7 @@ function Modal({ store, role, onClose, onSubmit }) {
           <div className="modal-title">{store.name}</div>
           <div className="modal-subtitle">
             {paso === "fecha"
-              ? `Seleccioná fecha y turno • ${role}`
+              ? `Selecciona fecha y turno • ${role}`
               : `${fechaElegida}${turnoElegido ? " · " + turnoElegido : ""} • ${role}`}
           </div>
         </div>
@@ -971,7 +971,7 @@ function App() {
           <span className="pill-count">📍 {totalLocales} {totalLocales === 1 ? "local" : "locales"}</span>
         </div>
         <p className="section-sub">
-          Seleccioná el local donde quieres asistir como <strong>{role}</strong>.
+          Selecciona el local donde quieres asistir como <strong>{role}</strong>.
         </p>
 
         {totalLocales > 0 ? (
