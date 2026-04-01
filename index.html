@@ -630,7 +630,7 @@
 const { useState, useEffect, useRef } = React;
 
 
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzbsahCDqW_Rsz6IFTndQXRpa-eaVAvxr0xXkq747MsRCLus8HnGUKmjfuo_r/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyFPsckHXceDLOIk9VOqe1bu85_9WmXJinXANJFo7GymGpntij6hmEiURSYFu8DnrXH/exec";
 
 const ROLE_EMOJI = { Picker: "🛒", Shopper: "🛍️", Driver: "🚙" };
 const ROLE_ICONS = { Picker: "📋", Shopper: "🛍️", Driver: "🚗" };
@@ -970,6 +970,8 @@ function App() {
                 📌 Recuerda que para seleccionar una sala de <strong>{cliente}</strong>, es importante que te encuentres previamente <strong>capacitado</strong>.
               </div>
             </div>
+            );
+          })
         ) : (
           <div className="empty">
             <div className="empty-icon">🔍</div>
