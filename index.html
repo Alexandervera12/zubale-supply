@@ -630,7 +630,7 @@
 const { useState, useEffect, useRef } = React;
 
 
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwnuOQgmtmqOBEOLcZQenPy8hvm7Lm1fHUnygIWLYgtUEt_AXzUekYBfwTqSf_42-rh/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyFPsckHXceDLOIk9VOqe1bu85_9WmXJinXANJFo7GymGpntij6hmEiURSYFu8DnrXH/exec";
 
 const ROLE_EMOJI = { Picker: "🛒", Shopper: "🛍️", Driver: "🚙" };
 const ROLE_ICONS = { Picker: "📋", Shopper: "🛍️", Driver: "🚗" };
@@ -733,7 +733,7 @@ function Modal({ store, role, onClose, onSubmit }) {
           <div className="modal-title">{store.name}</div>
           <div className="modal-subtitle">
             {paso === "fecha"
-              ? `Selecciona fecha y turno • ${role}`
+              ? `Seleccioná fecha y turno • ${role}`
               : `${fechaElegida}${turnoElegido ? " · " + turnoElegido : ""} • ${role}`}
           </div>
         </div>
@@ -812,7 +812,7 @@ function Modal({ store, role, onClose, onSubmit }) {
                 <span className="warning-icon">⚠️</span>
                 <span className="warning-text">
                   Asistencia seleccionada: <strong>{formatFecha(fechaElegida)}{turnoElegido ? " – " + turnoElegido : ""}</strong>.
-                  Recuerda que contamos contigo
+                  Asegurate de llegar en ese horario.
                 </span>
               </div>
 
@@ -820,7 +820,7 @@ function Modal({ store, role, onClose, onSubmit }) {
               <p className="input-hint">Teléfono registrado en tu aplicación Zubale</p>
 
               <div className="phone-input-wrap">
-                <span className="phone-prefix">569</span>
+                <span className="phone-prefix">🇨🇱 569</span>
                 <input
                   ref={inputRef}
                   type="tel"
@@ -933,7 +933,7 @@ function App() {
       {/* HERO + ROLE SELECTOR — siempre visible de inmediato */}
       <section className="hero">
         <h1>Selecciona tu rol y local</h1>
-        <p>Selecciona tu rol y escoge el local donde tienes disponibilidad de asistir en los próximos días. ¡Confirma con tu número y empezieza a ganar!</p>
+        <p>Selecciona tu rol y escoge el local donde tenés disponibilidad de asistir hoy. ¡Confirmá con tu número y empezá a ganar!</p>
 
         <div className="role-selector">
           {["Picker", "Shopper", "Driver"].map(r => (
@@ -967,10 +967,11 @@ function App() {
         {allStores && (
           <>
         <div style={{ display: "flex", alignItems: "center", marginBottom: 6 }}>
-          <span className="section-title">Locales disponibles para ti/span>
+          <span className="section-title">Locales disponibles para ti hoy</span>
+          <span className="pill-count">📍 {totalLocales} {totalLocales === 1 ? "local" : "locales"}</span>
         </div>
         <p className="section-sub">
-          Selecciona el local donde quieres asistir como <strong>{role}</strong>.
+          Seleccioná el local donde querés asistir como <strong>{role}</strong>.
         </p>
 
         {totalLocales > 0 ? (
@@ -1012,7 +1013,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        © 2026 Zubale
+        © 2025 Zubale Supply
       </footer>
 
       {/* MODAL */}
