@@ -555,6 +555,49 @@
       line-height: 1.5;
     }
 
+    /* ── FECHA / TURNO SELECTOR ── */
+    .fecha-group {
+      margin-bottom: 14px;
+    }
+
+    .fecha-titulo {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--zubale-text);
+      margin-bottom: 8px;
+    }
+
+    .turno-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .turno-btn {
+      padding: 8px 18px;
+      border-radius: 99px;
+      border: 2px solid var(--zubale-gray2);
+      background: var(--white);
+      color: var(--zubale-text);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: inherit;
+    }
+
+    .turno-btn:hover {
+      border-color: var(--zubale-blue);
+      color: var(--zubale-blue);
+    }
+
+    .turno-btn.active {
+      background: var(--zubale-blue);
+      border-color: var(--zubale-blue);
+      color: var(--white);
+      box-shadow: 0 3px 10px rgba(21,87,214,0.25);
+    }
+
     /* ── SKELETON LOADING ── */
     @keyframes shimmer {
       0%   { background-position: -600px 0; }
@@ -588,7 +631,7 @@ const { useState, useEffect, useRef } = React;
 
 
 /* ⚠️ Reemplazá con la URL del script de Supply cuando lo deploys */
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzbsahCDqW_Rsz6IFTndQXRpa-eaVAvxr0xXkq747MsRCLus8HMWpX3HnGUKmjfuo_r/exec";
+const GAS_URL = "https://script.google.com/macros/s/TU_ID_SUPPLY/exec";
 
 const ROLE_EMOJI = { Picker: "🛒", Shopper: "🛍️", Driver: "🚙" };
 const ROLE_ICONS = { Picker: "📋", Shopper: "🛍️", Driver: "🚗" };
@@ -622,16 +665,25 @@ function StoreCard({ store, onSelect }) {
 }
 
 function Modal({ store, role, onClose, onSubmit }) {
-  const [phone, setPhone] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [fechaElegida, setFechaElegida] = useState(null);
+  const [turnoElegido, setTurnoElegido] = useState(null);
+  const [phone, setPhone]               = useState("");
+  const [submitting, setSubmitting]     = useState(false);
   const inputRef = useRef(null);
 
+  // Fechas disponibles para esta tienda: { "01/04/2026": ["Mañana","Tarde"], ... }
+  const fechas = store.fechas || {};
+  const fechasKeys = Object.keys(fechas);
+
+  // Paso actual: "fecha" | "phone"
+  const paso = fechaElegida && (fechas[fechaElegida].length === 0 || turnoElegido) ? "phone" : "fecha";
+
   useEffect(() => {
-    setTimeout(() => inputRef.current?.focus(), 200);
+    if (paso === "phone") setTimeout(() => inputRef.current?.focus(), 100);
     const handleKey = (e) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, []);
+  }, [paso]);
 
   const handlePhone = (e) => {
     const val = e.target.value.replace(/\D/g, "").slice(0, 9);
@@ -641,30 +693,38 @@ function Modal({ store, role, onClose, onSubmit }) {
   const handleSubmit = async () => {
     if (phone.length < 8) return;
     setSubmitting(true);
-
-    /* ── Enviar datos al Google Apps Script ── */
     try {
       await fetch(GAS_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          local: store.name,
-          telefono: "569" + phone,
-          rol: role,
-          cliente: store.cliente,
-          fecha: new Date().toLocaleString("es-CL")
+          local:        store.name,
+          telefono:     "569" + phone,
+          rol:          role,
+          cliente:      store.cliente,
+          fechaElegida: fechaElegida,
+          turno:        turnoElegido || "–",
+          fecha:        new Date().toLocaleString("es-CL")
         })
       });
     } catch (e) {
-      console.warn("No se pudo conectar al sheet (prototipo):", e.message);
+      console.warn("Error al enviar:", e.message);
     }
-
     setSubmitting(false);
     onSubmit(store, phone);
   };
 
   const isValid = phone.length >= 8;
+
+  // Formatear fecha para mostrar: "01/04/2026" → "Martes 01 Abr"
+  const formatFecha = (str) => {
+    const meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+    const dias  = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+    const [d, m, y] = str.split("/");
+    const dt = new Date(y, m-1, d);
+    return `${dias[dt.getDay()]} ${d} ${meses[m-1]}`;
+  };
 
   return (
     <div className="overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -672,45 +732,89 @@ function Modal({ store, role, onClose, onSubmit }) {
         <div className="modal-header">
           <div className="modal-store-icon">{store.emoji}</div>
           <div className="modal-title">{store.name}</div>
-          <div className="modal-subtitle">Confirmar asistencia a sala • {role}</div>
+          <div className="modal-subtitle">
+            {paso === "fecha"
+              ? `Seleccioná fecha y turno • ${role}`
+              : `${fechaElegida}${turnoElegido ? " · " + turnoElegido : ""} • ${role}`}
+          </div>
         </div>
 
         <div className="modal-body">
-          {/* Warning */}
-          <div className="warning-box">
-            <span className="warning-icon">⚠️</span>
-            <span className="warning-text">
-              Recuerda que esta asistencia es válida <strong>solo por HOY</strong>.
-              Asiste cuanto antes para sumar ganancias.
-            </span>
-          </div>
 
-          {/* Phone input */}
-          <label className="input-label">Número de teléfono</label>
-          <p className="input-hint">Teléfono registrado en tu aplicación Zubale</p>
+          {/* ── PASO 1: Elegir fecha y turno ── */}
+          {paso === "fecha" && (
+            <>
+              <p className="input-label" style={{marginBottom:14}}>¿Cuándo querés asistir?</p>
 
-          <div className="phone-input-wrap">
-            <span className="phone-prefix">569</span>
-            <input
-              ref={inputRef}
-              type="tel"
-              inputMode="numeric"
-              className="phone-input"
-              placeholder="XXXX XXXX"
-              value={phone}
-              onChange={handlePhone}
-              onKeyDown={(e) => e.key === "Enter" && isValid && handleSubmit()}
-            />
-          </div>
+              {fechasKeys.map(fecha => (
+                <div key={fecha} className="fecha-group">
+                  <div className="fecha-titulo">📅 {formatFecha(fecha)}</div>
+                  <div className="turno-row">
+                    {fechas[fecha].length > 0 ? (
+                      fechas[fecha].map(turno => (
+                        <button
+                          key={turno}
+                          className={`turno-btn ${fechaElegida === fecha && turnoElegido === turno ? "active" : ""}`}
+                          onClick={() => { setFechaElegida(fecha); setTurnoElegido(turno); }}
+                        >
+                          {turno}
+                        </button>
+                      ))
+                    ) : (
+                      /* Sin turnos definidos — solo fecha */
+                      <button
+                        className={`turno-btn ${fechaElegida === fecha ? "active" : ""}`}
+                        onClick={() => { setFechaElegida(fecha); setTurnoElegido(null); }}
+                      >
+                        Disponible
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
 
-          <button
-            className="btn-submit"
-            onClick={handleSubmit}
-            disabled={!isValid || submitting}
-          >
-            {submitting ? "⏳ Enviando..." : "✅ Confirmar asistencia"}
-          </button>
-          <button className="btn-cancel" onClick={onClose}>Cancelar</button>
+              <button className="btn-cancel" onClick={onClose}>Cancelar</button>
+            </>
+          )}
+
+          {/* ── PASO 2: Ingresar teléfono ── */}
+          {paso === "phone" && (
+            <>
+              <div className="warning-box">
+                <span className="warning-icon">⚠️</span>
+                <span className="warning-text">
+                  Asistencia seleccionada: <strong>{formatFecha(fechaElegida)}{turnoElegido ? " – " + turnoElegido : ""}</strong>.
+                  Asegurate de llegar en ese horario.
+                </span>
+              </div>
+
+              <label className="input-label">Número de teléfono</label>
+              <p className="input-hint">Teléfono registrado en tu aplicación Zubale</p>
+
+              <div className="phone-input-wrap">
+                <span className="phone-prefix">🇨🇱 569</span>
+                <input
+                  ref={inputRef}
+                  type="tel"
+                  inputMode="numeric"
+                  className="phone-input"
+                  placeholder="XXXX XXXX"
+                  value={phone}
+                  onChange={handlePhone}
+                  onKeyDown={(e) => e.key === "Enter" && isValid && handleSubmit()}
+                />
+              </div>
+
+              <button className="btn-submit" onClick={handleSubmit} disabled={!isValid || submitting}>
+                {submitting ? "⏳ Enviando..." : "✅ Confirmar asistencia"}
+              </button>
+              <button className="btn-cancel" style={{marginTop:10}}
+                onClick={() => { setFechaElegida(null); setTurnoElegido(null); }}>
+                ← Cambiar fecha
+              </button>
+            </>
+          )}
+
         </div>
       </div>
     </div>
@@ -780,8 +884,9 @@ function App() {
   }, []);
 
   /* Construir lista de tarjetas para el rol activo */
+  // Nueva estructura: { WALMART: { "Local 1": { fecha: [...turnos] } }, ... }
   const clientesDelRol = allStores ? (allStores[role] || {}) : {};
-  const totalLocales   = Object.values(clientesDelRol).reduce((s, arr) => s + arr.length, 0);
+  const totalLocales   = Object.values(clientesDelRol).reduce((s, localesObj) => s + Object.keys(localesObj).length, 0);
 
   const handleSelect = (store) => setSelected(store);
   const handleClose  = () => setSelected(null);
@@ -841,18 +946,20 @@ function App() {
         </p>
 
         {totalLocales > 0 ? (
-          Object.entries(clientesDelRol).map(([cliente, nombres]) => (
+          Object.entries(clientesDelRol).map(([cliente, localesObj]) => {
+            const nombresLocales = Object.keys(localesObj);
+            return (
             <div key={cliente} className="client-group">
               <div className="client-header">
                 <span className="client-label">{cliente}</span>
                 <div className="client-divider" />
-                <span className="client-count">{nombres.length} {nombres.length === 1 ? "local" : "locales"}</span>
+                <span className="client-count">{nombresLocales.length} {nombresLocales.length === 1 ? "local" : "locales"}</span>
               </div>
               <div className="cards-grid">
-                {nombres.map((nombre, idx) => (
+                {nombresLocales.map((nombre, idx) => (
                   <StoreCard
                     key={idx}
-                    store={{ id: idx, name: nombre, emoji: ROLE_EMOJI[role] || "🏪", cliente }}
+                    store={{ id: idx, name: nombre, emoji: ROLE_EMOJI[role] || "🏪", cliente, fechas: localesObj[nombre] }}
                     onSelect={handleSelect}
                   />
                 ))}
@@ -861,7 +968,7 @@ function App() {
                 📌 Recuerda que para seleccionar una sala de <strong>{cliente}</strong>, es importante que te encuentres previamente <strong>capacitado</strong>.
               </div>
             </div>
-          ))
+          )})
         ) : (
           <div className="empty">
             <div className="empty-icon">🔍</div>
