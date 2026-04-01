@@ -630,8 +630,7 @@
 const { useState, useEffect, useRef } = React;
 
 
-/* ⚠️ Reemplazá con la URL del script de Supply cuando lo deploys */
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzbsahCDqW_Rsz6IFTndQXRpa-eaVAvxr0xXkq747MsRCLus8HMWpX3HnGUKmjfuo_r/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzbsahCDqW_Rsz6IFTndQXRpa-eaVAvxr0xXkq747MsRCLus8HnGUKmjfuo_r/exec";
 
 const ROLE_EMOJI = { Picker: "🛒", Shopper: "🛍️", Driver: "🚙" };
 const ROLE_ICONS = { Picker: "📋", Shopper: "🛍️", Driver: "🚗" };
@@ -884,9 +883,10 @@ function App() {
   }, []);
 
   /* Construir lista de tarjetas para el rol activo */
-  // Nueva estructura: { WALMART: { "Local 1": { fecha: [...turnos] } }, ... }
   const clientesDelRol = allStores ? (allStores[role] || {}) : {};
-  const totalLocales   = Object.values(clientesDelRol).reduce((s, localesObj) => s + Object.keys(localesObj).length, 0);
+  const totalLocales   = Object.values(clientesDelRol).reduce((s, localesObj) => {
+    return s + (Array.isArray(localesObj) ? localesObj.length : Object.keys(localesObj).length);
+  }, 0);
 
   const handleSelect = (store) => setSelected(store);
   const handleClose  = () => setSelected(null);
@@ -947,7 +947,9 @@ function App() {
 
         {totalLocales > 0 ? (
           Object.entries(clientesDelRol).map(([cliente, localesObj]) => {
-            const nombresLocales = Object.keys(localesObj);
+            // Compatible con formato viejo (array) y nuevo (objeto con fechas)
+            const esArray = Array.isArray(localesObj);
+            const nombresLocales = esArray ? localesObj : Object.keys(localesObj);
             return (
             <div key={cliente} className="client-group">
               <div className="client-header">
@@ -959,7 +961,7 @@ function App() {
                 {nombresLocales.map((nombre, idx) => (
                   <StoreCard
                     key={idx}
-                    store={{ id: idx, name: nombre, emoji: ROLE_EMOJI[role] || "🏪", cliente, fechas: localesObj[nombre] }}
+                    store={{ id: idx, name: nombre, emoji: ROLE_EMOJI[role] || "🏪", cliente, fechas: esArray ? {} : (localesObj[nombre] || {}) }}
                     onSelect={handleSelect}
                   />
                 ))}
@@ -968,7 +970,6 @@ function App() {
                 📌 Recuerda que para seleccionar una sala de <strong>{cliente}</strong>, es importante que te encuentres previamente <strong>capacitado</strong>.
               </div>
             </div>
-          )})
         ) : (
           <div className="empty">
             <div className="empty-icon">🔍</div>
