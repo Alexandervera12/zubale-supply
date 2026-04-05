@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zubale Supply – Registro</title>
+  <title>Zubale – Supply</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -12,812 +12,678 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --zubale-blue:        #1557D6;
-      --zubale-blue2:       #1B4FFF;
-      --zubale-blue-light:  #DBEAFE;
-      --zubale-blue-dark:   #0A1A6B;
-      --zubale-blue-deeper: #0B3BAA;
-      --zubale-gray:        #F3F6FA;
-      --zubale-gray2:       #E5E7EB;
-      --zubale-text:        #1A2340;
-      --zubale-muted:       #6B7A9A;
-      --white:              #FFFFFF;
-      --success:            #10B981;
-      --danger:             #EF4444;
-      --warning-bg:         #FEF9C3;
-      --warning-border:     #FDE047;
-      --warning-text:       #854D0E;
+      --blue:        #1557D6;
+      --blue2:       #1B4FFF;
+      --blue-light:  #DBEAFE;
+      --blue-dark:   #0A1A6B;
+      --blue-deeper: #0B3BAA;
+      --gray:        #F3F6FA;
+      --gray2:       #E5E7EB;
+      --text:        #1A2340;
+      --muted:       #6B7A9A;
+      --white:       #FFFFFF;
+      --success:     #10B981;
+      --warn-bg:     #FEF9C3;
+      --warn-border: #FDE047;
+      --warn-text:   #854D0E;
     }
-
-    html, body {
-      height: 100%;
-      font-family: 'Lexend', 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: var(--zubale-gray);
-      color: var(--zubale-text);
-    }
-    #root { min-height: 100vh; }
+    html, body { height: 100%; font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; background: var(--gray); color: var(--text); }
     input, button, select, textarea { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
+    #root { min-height: 100vh; }
 
-    /* ──── HEADER ──────────────────────────────────────── */
+    /* ── HEADER ── */
     .header {
       background: var(--white);
       padding: 0 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       height: 64px;
-      box-shadow: 0 1px 0 #E5E7EB;
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      box-shadow: 0 1px 0 var(--gray2);
+      position: sticky; top: 0; z-index: 50;
     }
-    .header-logo { display: flex; align-items: center; gap: 10px; }
-    .header-badge {
-      background: var(--zubale-blue-light);
-      color: var(--zubale-blue);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 99px;
-      border: 1px solid #BFDBFE;
-    }
+    .header-logo { display: flex; align-items: center; }
 
-    /* ──── HERO ────────────────────────────────────────── */
-    .hero {
-      background: var(--zubale-blue);
-      color: var(--white);
-      padding: 36px 24px 28px;
+    /* ── PHONE SCREEN ── */
+    .phone-screen {
+      min-height: calc(100vh - 64px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 20px;
+      background: var(--gray);
+    }
+    .phone-card {
+      background: var(--white);
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(21,87,214,0.12);
+      padding: 48px 40px 40px;
+      width: 100%; max-width: 440px;
       text-align: center;
     }
-    .hero h1 {
-      font-size: clamp(20px, 4vw, 30px);
-      font-weight: 800;
-      margin-bottom: 8px;
-      line-height: 1.2;
-    }
-    .hero p {
-      font-size: 15px;
-      opacity: 0.85;
-      max-width: 480px;
-      margin: 0 auto;
-      line-height: 1.5;
-    }
-
-    /* ──── PHONE GATE ──────────────────────────────────── */
-    .gate-wrap {
-      max-width: 440px;
-      margin: 0 auto;
-      padding: 80px 20px 60px;
-    }
-    .gate-card {
-      background: var(--white);
-      border-radius: 20px;
-      padding: 40px 36px;
-      box-shadow: 0 4px 28px rgba(21,87,214,0.10);
-    }
-    .gate-icon {
+    @media (max-width: 480px) { .phone-card { padding: 36px 24px 32px; border-radius: 20px; } }
+    .phone-card-icon {
       width: 72px; height: 72px;
-      background: var(--zubale-blue-light);
       border-radius: 20px;
+      background: var(--blue-light);
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto 20px;
     }
-    .gate-icon img { width: 64px; height: 64px; object-fit: contain; }
-    .gate-title {
-      font-size: 20px; font-weight: 800;
-      text-align: center; margin-bottom: 6px;
-    }
-    .gate-sub {
-      font-size: 14px; color: var(--zubale-muted);
-      text-align: center; margin-bottom: 28px; line-height: 1.5;
-    }
-    .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-    .input-label { font-size: 13px; font-weight: 600; color: var(--zubale-text); }
-    .phone-input-row {
+    .phone-card-title { font-size: clamp(20px,4vw,26px); font-weight: 800; color: var(--text); margin-bottom: 10px; line-height: 1.25; }
+    .phone-card-sub   { font-size: 14px; color: var(--muted); margin-bottom: 32px; line-height: 1.5; }
+
+    /* ── INPUT ── */
+    .phone-input-wrap {
       display: flex; align-items: center;
-      border: 2px solid var(--zubale-gray2);
-      border-radius: 12px;
-      overflow: hidden;
+      border: 2px solid var(--gray2);
+      border-radius: 14px; overflow: hidden;
       transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 16px;
       background: var(--white);
     }
-    .phone-input-row:focus-within {
-      border-color: var(--zubale-blue);
-      box-shadow: 0 0 0 3px rgba(21,87,214,0.12);
-    }
-    .phone-input-row.error-border { border-color: var(--danger); }
+    .phone-input-wrap:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(21,87,214,0.12); }
     .phone-prefix {
-      background: var(--zubale-gray);
-      border-right: 2px solid var(--zubale-gray2);
-      padding: 0 14px;
-      height: 48px;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--zubale-text);
-      display: flex; align-items: center;
-      white-space: nowrap;
-      flex-shrink: 0;
+      padding: 0 16px; font-size: 15px; font-weight: 700; color: var(--text);
+      border-right: 2px solid var(--gray2);
+      height: 52px; display: flex; align-items: center;
+      background: var(--gray); white-space: nowrap;
     }
     .phone-input {
-      flex: 1;
-      height: 48px;
-      border: none;
-      padding: 0 14px;
-      font-size: 15px;
-      font-weight: 600;
-      outline: none;
-      background: var(--white);
-      letter-spacing: 0.5px;
-      font-family: inherit;
+      flex: 1; border: none; outline: none;
+      padding: 0 16px; font-size: 18px; font-weight: 600;
+      color: var(--text); height: 52px;
+      font-family: inherit; letter-spacing: 1px;
     }
-    .phone-input::placeholder { color: var(--zubale-muted); font-weight: 400; }
-    .error-msg {
-      font-size: 13px; color: var(--danger);
-      font-weight: 500; margin-top: 4px;
-    }
+    .phone-input::placeholder { color: var(--muted); font-weight: 400; font-size: 15px; letter-spacing: 0; }
+
+    /* ── BUTTONS ── */
     .btn-primary {
-      width: 100%;
-      height: 52px;
-      background: var(--zubale-blue);
-      color: var(--white);
-      border: none; border-radius: 12px;
-      font-size: 16px; font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-primary:hover { background: var(--zubale-blue2); transform: translateY(-1px); }
-    .btn-primary:active { transform: scale(0.98); }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-    /* ──── BIENVENIDA ──────────────────────────────────── */
-    .welcome-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: #D1FAE5; color: #065F46;
-      font-size: 13px; font-weight: 700;
-      padding: 6px 14px; border-radius: 99px;
-      margin-bottom: 12px;
-    }
-
-    /* ──── ROLE SELECTOR ───────────────────────────────── */
-    .role-selector {
-      display: flex; gap: 10px; justify-content: center;
-      flex-wrap: wrap; padding: 28px 24px 0;
-    }
-    .role-btn {
-      display: flex; align-items: center; gap: 8px;
-      padding: 12px 28px; border-radius: 999px;
-      border: 2px solid rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.12);
-      color: var(--white);
-      font-size: 15px; font-weight: 700;
+      width: 100%; padding: 16px; border-radius: 14px; border: none;
+      background: var(--blue); color: var(--white);
+      font-size: 16px; font-weight: 800;
       cursor: pointer; transition: all 0.2s;
-      backdrop-filter: blur(4px);
+      box-shadow: 0 4px 16px rgba(21,87,214,0.3);
+      font-family: inherit; letter-spacing: 0.3px;
     }
-    .role-btn:hover {
-      background: rgba(255,255,255,0.22);
-      border-color: rgba(255,255,255,0.6);
-      transform: translateY(-2px);
+    .btn-primary:hover:not(:disabled) { background: var(--blue2); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(21,87,214,0.4); }
+    .btn-primary:active:not(:disabled) { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary {
+      width: 100%; padding: 13px; border-radius: 12px;
+      border: 2px solid var(--gray2); background: var(--white);
+      color: var(--muted); font-size: 14px; font-weight: 600;
+      cursor: pointer; margin-top: 10px; transition: all 0.2s; font-family: inherit;
     }
-    .role-btn.active {
-      background: var(--white); color: var(--zubale-blue);
-      border-color: var(--white);
-      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
-      transform: translateY(-2px);
+    .btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* ── FULL-SCREEN STATUS CARDS ── */
+    .fullscreen-center {
+      min-height: calc(100vh - 64px);
+      display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .status-card {
+      text-align: center; background: var(--white);
+      border-radius: 24px; padding: 48px 36px;
+      max-width: 400px; width: 100%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    }
+    .status-icon { font-size: 52px; margin-bottom: 16px; }
+    .status-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+    .status-text { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
+
+    /* ── LOADING SPINNER ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 48px; height: 48px;
+      border: 4px solid var(--blue-light); border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 20px;
     }
 
-    /* ──── MAIN CONTENT ────────────────────────────────── */
-    .main {
-      max-width: 1100px; margin: 0 auto;
-      padding: 32px 20px 60px;
+    /* ── HERO ── */
+    .hero {
+      background: var(--blue); color: var(--white);
+      padding: 36px 24px 28px; text-align: center;
     }
-    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
-    .section-sub { font-size: 14px; color: var(--zubale-muted); margin-bottom: 24px; }
+    .hero h1 { font-size: clamp(20px,4vw,28px); font-weight: 800; margin-bottom: 8px; line-height: 1.2; }
+    .hero p { font-size: 15px; opacity: 0.85; max-width: 480px; margin: 0 auto; line-height: 1.5; }
 
-    /* ──── CARDS GRID ──────────────────────────────────── */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-    @media (max-width: 900px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+    /* ── MAIN ── */
+    .main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 60px; }
+    .section-title { font-size: 18px; font-weight: 700; color: var(--text); }
+    .section-sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; margin-top: 4px; }
+
+    /* ── CLIENT GROUP ── */
+    .client-group { margin-bottom: 40px; }
+    .client-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .client-label { font-size: 14px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text); }
+    .client-divider { flex: 1; height: 1px; background: var(--gray2); }
+
+    /* ── CARDS GRID ── */
+    .cards-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    @media (max-width: 900px) { .cards-grid { grid-template-columns: repeat(2,1fr); } }
     @media (max-width: 480px) { .cards-grid { grid-template-columns: 1fr 1fr; gap: 10px; } }
-
     .store-card {
-      background: var(--white);
-      border-radius: 16px; padding: 22px 16px 18px;
-      cursor: pointer; border: 2px solid transparent;
+      background: var(--white); border-radius: 16px;
+      padding: 22px 16px 18px; cursor: pointer;
+      border: 2px solid transparent;
       box-shadow: 0 2px 10px rgba(0,0,0,0.06);
       transition: all 0.22s cubic-bezier(.4,0,.2,1);
       display: flex; flex-direction: column; align-items: center;
-      gap: 12px; text-align: center;
+      gap: 10px; text-align: center;
     }
-    .store-card:hover {
-      border-color: var(--zubale-blue);
-      box-shadow: 0 6px 24px rgba(21,87,214,0.15);
-      transform: translateY(-3px);
-    }
+    .store-card:hover { border-color: var(--blue); box-shadow: 0 6px 24px rgba(21,87,214,0.15); transform: translateY(-3px); }
     .store-card:active { transform: scale(0.97); }
     .store-icon-wrap {
-      width: 56px; height: 56px;
-      border-radius: 14px; background: var(--zubale-blue-light);
+      width: 56px; height: 56px; border-radius: 14px;
+      background: var(--blue-light);
       display: flex; align-items: center; justify-content: center;
       font-size: 28px; transition: background 0.2s;
     }
-    .store-card:hover .store-icon-wrap { background: var(--zubale-blue); }
-    .store-name { font-size: 14px; font-weight: 700; line-height: 1.3; }
-    .store-tag {
-      font-size: 11px; font-weight: 600;
-      padding: 3px 10px; border-radius: 99px;
-      background: var(--zubale-blue-light); color: var(--zubale-blue);
-    }
-    .store-dates {
-      display: flex; flex-direction: column; gap: 4px; width: 100%;
-    }
-    .date-chip {
-      font-size: 11px; font-weight: 600;
-      padding: 4px 8px; border-radius: 6px;
-      background: #EFF6FF; color: var(--zubale-blue);
-      cursor: pointer; border: 1px solid #BFDBFE;
-      transition: all 0.15s;
-    }
-    .date-chip:hover { background: var(--zubale-blue); color: #fff; }
-    .date-chip.disabled {
-      background: var(--zubale-gray2);
-      color: var(--zubale-muted);
-      cursor: not-allowed;
-      border-color: var(--zubale-gray2);
-      opacity: 0.7;
-      text-decoration: line-through;
-    }
-    .date-chip.disabled:hover { background: var(--zubale-gray2); color: var(--zubale-muted); }
+    .store-card:hover .store-icon-wrap { background: var(--blue); }
+    .store-card:hover .store-emoji { filter: brightness(0) invert(1); }
+    .store-name { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.3; }
 
-    /* ──── MODAL ───────────────────────────────────────── */
+    /* ── DATE CHIPS ── */
+    .date-chips { display: flex; flex-direction: column; gap: 5px; width: 100%; }
+    .date-chip {
+      font-size: 12px; font-weight: 600;
+      padding: 5px 10px; border-radius: 8px;
+      background: var(--blue-light); color: var(--blue);
+      cursor: pointer; border: 1px solid #BFDBFE;
+      transition: all 0.15s; font-family: inherit;
+    }
+    .date-chip:hover:not(.taken) { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .date-chip.taken {
+      background: var(--gray2); color: var(--muted);
+      cursor: not-allowed; border-color: var(--gray2);
+      text-decoration: line-through; opacity: 0.7;
+    }
+
+    /* ── EMPTY ── */
+    .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .empty-icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+    .empty-text { font-size: 14px; }
+
+    /* ── WARN BOX ── */
+    .warn-box {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: var(--warn-bg); border: 1.5px solid var(--warn-border);
+      border-radius: 12px; padding: 14px;
+    }
+    .warn-box-icon { font-size: 18px; flex-shrink: 0; }
+    .warn-box-text { font-size: 13px; font-weight: 600; color: var(--warn-text); line-height: 1.5; }
+
+    /* ── MODAL ── */
     .overlay {
       position: fixed; inset: 0;
-      background: rgba(17,9,40,0.55);
-      backdrop-filter: blur(3px);
+      background: rgba(17,9,40,0.55); backdrop-filter: blur(3px);
       display: flex; align-items: center; justify-content: center;
       z-index: 100; padding: 20px;
       animation: fadeIn 0.18s ease;
     }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
     .modal {
-      background: var(--white);
-      border-radius: 24px; width: 100%; max-width: 420px;
-      overflow: hidden;
+      background: var(--white); border-radius: 24px;
+      width: 100%; max-width: 420px; overflow: hidden;
       box-shadow: 0 24px 60px rgba(0,0,0,0.22);
       animation: slideUp 0.22s cubic-bezier(.4,0,.2,1);
     }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px) scale(0.97); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .modal-header {
-      background: var(--zubale-blue);
-      padding: 24px 24px 20px; color: var(--white);
-    }
+    @keyframes slideUp { from { opacity:0; transform:translateY(30px) scale(0.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+    .modal-header { background: var(--blue); padding: 24px 24px 20px; color: var(--white); }
     .modal-store-icon {
       width: 48px; height: 48px;
-      background: rgba(255,255,255,0.18);
-      border-radius: 12px;
+      background: rgba(255,255,255,0.18); border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
       font-size: 24px; margin-bottom: 12px;
     }
     .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-    .modal-subtitle { font-size: 14px; opacity: 0.85; }
-    .modal-body { padding: 24px; }
-    .detail-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 0; border-bottom: 1px solid #F1F5F9;
+    .modal-subtitle { font-size: 13px; opacity: 0.8; }
+    .modal-body { padding: 22px 24px 28px; }
+    .confirm-detail {
+      text-align: center; font-size: 13px; color: var(--muted);
+      margin: 14px 0 20px; padding: 12px;
+      background: var(--gray); border-radius: 10px; line-height: 1.6;
     }
-    .detail-row:last-child { border-bottom: none; }
-    .detail-label { font-size: 13px; color: var(--zubale-muted); font-weight: 500; }
-    .detail-value { font-size: 14px; font-weight: 700; color: var(--zubale-text); }
-    .modal-actions {
-      padding: 0 24px 24px;
-      display: flex; gap: 10px;
-    }
-    .btn-cancel {
-      flex: 1; height: 48px;
-      background: var(--zubale-gray); color: var(--zubale-text);
-      border: none; border-radius: 10px;
-      font-size: 15px; font-weight: 600;
-      cursor: pointer; transition: background 0.2s;
-    }
-    .btn-cancel:hover { background: var(--zubale-gray2); }
-    .btn-confirm {
-      flex: 2; height: 48px;
-      background: var(--zubale-blue); color: var(--white);
-      border: none; border-radius: 10px;
-      font-size: 15px; font-weight: 700;
-      cursor: pointer; transition: background 0.2s;
-    }
-    .btn-confirm:hover { background: var(--zubale-blue2); }
-    .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+    .confirm-detail strong { color: var(--text); }
 
-    /* ──── SUCCESS SCREEN ──────────────────────────────── */
-    .success-wrap {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; min-height: 70vh;
-      padding: 40px 24px; text-align: center;
+    /* ── TURNO SELECTOR ── */
+    .turno-label { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; text-align: left; }
+    .turno-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .turno-btn {
+      padding: 8px 18px; border-radius: 99px;
+      border: 2px solid var(--gray2); background: var(--white);
+      color: var(--text); font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: all 0.18s; font-family: inherit;
     }
-    .success-icon {
-      width: 88px; height: 88px;
-      background: #D1FAE5; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 44px; margin-bottom: 24px;
-      animation: popIn 0.4s cubic-bezier(.4,0,.2,1);
-    }
-    @keyframes popIn {
-      from { transform: scale(0.5); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
-    }
-    .success-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; color: var(--zubale-text); }
-    .success-sub { font-size: 15px; color: var(--zubale-muted); margin-bottom: 28px; max-width: 360px; line-height: 1.5; }
-    .success-card {
-      background: var(--white);
-      border-radius: 16px; padding: 20px 28px;
-      box-shadow: 0 4px 20px rgba(21,87,214,0.10);
-      width: 100%; max-width: 360px;
-      margin-bottom: 24px;
-      text-align: left;
-    }
-    .success-card-row {
-      display: flex; justify-content: space-between;
-      padding: 8px 0; border-bottom: 1px solid #F1F5F9;
-      font-size: 14px;
-    }
-    .success-card-row:last-child { border-bottom: none; }
-    .success-card-label { color: var(--zubale-muted); font-weight: 500; }
-    .success-card-value { font-weight: 700; color: var(--zubale-text); }
-    .btn-new {
-      height: 52px; padding: 0 32px;
-      background: var(--zubale-blue); color: var(--white);
-      border: none; border-radius: 12px;
-      font-size: 16px; font-weight: 700;
-      cursor: pointer; transition: background 0.2s;
-    }
-    .btn-new:hover { background: var(--zubale-blue2); }
+    .turno-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .turno-btn.active { border-color: var(--blue); background: var(--blue); color: #fff; }
 
-    /* ──── TOAST ───────────────────────────────────────── */
+    /* ── TOAST ── */
     .toast {
-      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-      background: #1E293B; color: #fff;
-      padding: 12px 24px; border-radius: 12px;
-      font-size: 14px; font-weight: 600;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-      z-index: 999; animation: toastIn 0.3s ease;
-      white-space: nowrap;
+      position: fixed; bottom: 30px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--blue-dark); color: var(--white);
+      padding: 18px 24px; border-radius: 18px;
+      max-width: 360px; width: calc(100% - 40px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      z-index: 200;
+      animation: toastIn 0.35s cubic-bezier(.4,0,.2,1);
+      border-left: 4px solid var(--success);
     }
-    .toast.error-toast { background: #DC2626; }
-    .toast.success-toast { background: #059669; }
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateX(-50%) translateY(16px); }
-      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
+    @keyframes toastIn { from { opacity:0; transform:translateX(-50%) translateY(20px) scale(0.96); } to { opacity:1; transform:translateX(-50%) translateY(0) scale(1); } }
+    .toast-icon { font-size: 28px; margin-bottom: 8px; }
+    .toast-title { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+    .toast-msg { font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.82); }
 
-    /* ──── SPINNER ─────────────────────────────────────── */
-    .spinner {
-      display: inline-block; width: 20px; height: 20px;
-      border: 3px solid rgba(255,255,255,0.35);
-      border-radius: 50%; border-top-color: #fff;
-      animation: spin 0.7s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    /* ── SKELETON ── */
+    @keyframes shimmer { 0% { background-position:-600px 0; } 100% { background-position:600px 0; } }
+    .skeleton-card { background: var(--white); border-radius: 16px; padding: 22px 16px 18px; display: flex; flex-direction: column; align-items: center; gap: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+    .skeleton-block { border-radius: 8px; background: linear-gradient(90deg,#f0f0f0 25%,#e0e8ff 50%,#f0f0f0 75%); background-size: 600px 100%; animation: shimmer 1.4s infinite linear; }
 
-    /* ──── EMPTY STATE ─────────────────────────────────── */
-    .empty-state {
-      text-align: center; padding: 60px 20px;
-      color: var(--zubale-muted);
-    }
-    .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
-    .empty-state-text { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
-    .empty-state-sub  { font-size: 14px; }
-
-    /* ──── TURNO SELECTOR ──────────────────────────────── */
-    .turno-row {
-      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
-    }
-    .turno-chip {
-      font-size: 12px; font-weight: 700; padding: 5px 14px;
-      border-radius: 8px; background: #EFF6FF;
-      color: var(--zubale-blue); cursor: pointer;
-      border: 1.5px solid #BFDBFE; transition: all 0.15s;
-    }
-    .turno-chip:hover, .turno-chip.active {
-      background: var(--zubale-blue); color: #fff; border-color: var(--zubale-blue);
-    }
+    /* ── FOOTER ── */
+    .footer { text-align: center; padding: 20px; color: var(--muted); font-size: 12px; }
   </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useEffect, useCallback, useRef } = React;
+const { useState, useEffect, useRef } = React;
 
-/* ── URL del nuevo GAS (supply-bd) ─────────────────────────── */
-const GAS_SUPPLY_BD_URL = "https://script.google.com/macros/s/AKfycbx2Sz0uDZrX1RHRuL_cqOZGNhzmvkesFtvpBTx98KzDErg7MZjoC68C63D5bt1FLRw/exec";
+/* ── URL del GAS — la misma que en dashboard.html ────────────── */
+const GAS_URL = "https://script.google.com/macros/s/AKfycbx2Sz0uDZrX1RHRuL_cqOZGNhzmvkesFtvpBTx98KzDErg7MZjoC68C63D5bt1FLRw/exec";
 
-/* ── Helpers ────────────────────────────────────────────────── */
-const STORE_ICONS = {
-  "WALMART":  "🏪", "TOTTUS": "🛒", "CENCOSUD": "🏬",
-  "SMU": "🛍️", "UNIMARC": "🏪", "JUMBO": "🛒"
+const ROLE_EMOJI = { Picker: "📦", Shopper: "🛍️", Driver: "🚙" };
+const STORE_EMOJI = {
+  "WALMART":"🏪","TOTTUS":"🛒","CENCOSUD":"🏬",
+  "SMU":"🛍️","UNIMARC":"🏪","JUMBO":"🛒"
 };
-function storeIcon(brand) {
+function getEmoji(brand) {
   if (!brand) return "🏪";
-  const up = String(brand).toUpperCase();
-  for (const k in STORE_ICONS) if (up.includes(k)) return STORE_ICONS[k];
+  const up = brand.toUpperCase();
+  for (const k in STORE_EMOJI) if (up.includes(k)) return STORE_EMOJI[k];
   return "🏪";
 }
-const ROLE_ICONS = { "Picker": "📦", "Driver": "🚗", "Shopper": "🛍️" };
 
-function Toast({ msg, type, onDone }) {
-  useEffect(() => {
-    const t = setTimeout(onDone, 3000);
-    return () => clearTimeout(t);
-  }, []);
-  const cls = type === "error" ? "toast error-toast" : type === "success" ? "toast success-toast" : "toast";
-  return <div className={cls}>{msg}</div>;
+/* ════════ HEADER ════════ */
+function Header() {
+  return (
+    <header className="header">
+      <div className="header-logo">
+        <img
+          src="https://www.zubale.com/cl/wp-content/uploads/2023/12/logo_zubale_2023.png"
+          alt="Zubale"
+          style={{ height:"32px", width:"auto" }}
+        />
+      </div>
+    </header>
+  );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   FASE 1 — Validador de teléfono
-═══════════════════════════════════════════════════════════ */
-function PhoneGate({ onValidated }) {
-  const [phone, setPhone]   = useState("");
-  const [error, setError]   = useState("");
+/* ════════ PHONE SCREEN — idéntica a BD ════════ */
+function PhoneScreen({ onSubmit }) {
+  const [digits, setDigits]   = useState("");
   const [loading, setLoading] = useState(false);
+  const inputRef              = useRef(null);
+
+  useEffect(() => { inputRef.current?.focus(); }, []);
+
+  const handleChange = (e) => {
+    const val = e.target.value.replace(/\D/g,"").slice(0,8);
+    setDigits(val);
+    if (val.length === 8) setTimeout(() => onSubmit(val), 80);
+  };
 
   const handleSubmit = async () => {
-    const clean = phone.replace(/\D/g, "");
-    if (clean.length < 7) { setError("Ingresa un teléfono válido."); return; }
-    const fullPhone = "569" + clean;
-    setError(""); setLoading(true);
-    try {
-      const url = `${GAS_SUPPLY_BD_URL}?action=getUserAndStores&telefono=${encodeURIComponent(fullPhone)}`;
-      const res = await fetch(url).then(r => r.json());
-      if (res.status === "ok") {
-        onValidated({ telefono: fullPhone, nombre: res.nombre, locales: res.locales, fechasRegistradas: res.fechasRegistradas || [] });
-      } else if (res.status === "not_found") {
-        setError("Teléfono no registrado en el sistema.");
-      } else {
-        setError("Error al verificar. Intenta nuevamente.");
-      }
-    } catch {
-      setError("No se pudo conectar. Verifica tu conexión.");
-    }
+    if (digits.length < 8 || loading) return;
+    setLoading(true);
+    await onSubmit(digits);
     setLoading(false);
   };
 
-  const handleKey = e => { if (e.key === "Enter") handleSubmit(); };
-
   return (
-    <div className="gate-wrap">
-      <div className="gate-card">
-        <div className="gate-icon">
-          <img src="https://res.cloudinary.com/dc9lx1ruu/image/upload/v1775076708/1200x630wa_-_copia-removebg-preview_my7zpm.png" alt="Zubale" />
+    <div className="phone-screen">
+      <div className="phone-card">
+        <div className="phone-card-icon">
+          <img
+            src="https://res.cloudinary.com/dc9lx1ruu/image/upload/v1775076708/1200x630wa_-_copia-removebg-preview_my7zpm.png"
+            alt="Zubale"
+            style={{ width:"64px", height:"64px", objectFit:"contain" }}
+          />
         </div>
-        <h2 className="gate-title">Ingresa tu número de teléfono registrado</h2>
-        <p className="gate-sub">Te mostraremos las salas disponibles para HOY.</p>
-        <div className="input-group">
-          <label className="input-label">Número de teléfono</label>
-          <div className={`phone-input-row${error ? " error-border" : ""}`}>
-            <span className="phone-prefix">569</span>
-            <input
-              className="phone-input"
-              type="tel"
-              inputMode="numeric"
-              placeholder="XXXX XXXX"
-              value={phone}
-              onChange={e => { setPhone(e.target.value.replace(/\D/g,"")); setError(""); }}
-              onKeyDown={handleKey}
-              maxLength={8}
-              autoFocus
-            />
-          </div>
-          {error && <p className="error-msg">⚠️ {error}</p>}
+        <h1 className="phone-card-title">Ingresa tu número de teléfono registrado</h1>
+        <p className="phone-card-sub">Te mostraremos las salas disponibles para HOY</p>
+        <div className="phone-input-wrap">
+          <span className="phone-prefix">569</span>
+          <input
+            ref={inputRef}
+            type="tel"
+            inputMode="numeric"
+            className="phone-input"
+            placeholder="XXXX XXXX"
+            value={digits}
+            onChange={handleChange}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          />
         </div>
-        <button className="btn-primary" onClick={handleSubmit} disabled={loading}>
-          {loading ? <span className="spinner"/> : <>Buscar mis salas →</>}
+        <button className="btn-primary" onClick={handleSubmit} disabled={digits.length < 8 || loading}>
+          {loading ? "⏳ Buscando..." : "Buscar mis salas →"}
         </button>
       </div>
     </div>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   FASE 2 — Selección de local, fecha y turno
-═══════════════════════════════════════════════════════════ */
-function StoreSelector({ userData, onSelect }) {
-  const { nombre, locales, fechasRegistradas } = userData;
-  const roles = Object.keys(locales || {});
-  const [activeRole, setActiveRole] = useState(roles[0] || "");
-  const [selected, setSelected]     = useState(null);  // { local, fecha, brand }
-  const [turno, setTurno]           = useState(null);
-
-  // Clientes (brands) para el rol activo
-  const clientes = activeRole && locales[activeRole] ? Object.keys(locales[activeRole]) : [];
-
-  const handleDateClick = (local, fecha, brand, turnos) => {
-    if (fechasRegistradas.includes(fecha)) return; // bloqueado
-    setSelected({ local, fecha, brand, turnos });
-    setTurno(turnos && turnos.length === 1 ? turnos[0] : null);
-  };
-
-  const handleConfirm = () => {
-    if (!selected) return;
-    if (selected.turnos && selected.turnos.length > 0 && !turno) return;
-    onSelect({
-      local:         selected.local,
-      fecha:         selected.fecha,
-      brand:         selected.brand,
-      rol:           activeRole,
-      turno:         turno || "",
-      nombre
-    });
-  };
-
+/* ════════ LOADING SCREEN — idéntica a BD ════════ */
+function LoadingScreen() {
+  const [pct, setPct] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPct(prev => {
+        if (prev >= 90) { clearInterval(interval); return prev; }
+        const step = prev < 40 ? 8 : prev < 70 ? 4 : 1;
+        return Math.min(prev + step, 90);
+      });
+    }, 120);
+    return () => clearInterval(interval);
+  }, []);
   return (
-    <>
-      {/* Hero con nombre + selector de rol */}
-      <div className="hero">
-        <div className="welcome-badge">✅ Bienvenid@, {nombre}</div>
-        <h1>Selecciona tu sala</h1>
-        <p>Elige el local y fecha en que asistirás.</p>
-        {roles.length > 1 && (
-          <div className="role-selector" style={{paddingTop: 20}}>
-            {roles.map(r => (
-              <button
-                key={r}
-                className={`role-btn${activeRole === r ? " active" : ""}`}
-                onClick={() => { setActiveRole(r); setSelected(null); setTurno(null); }}
-              >
-                <span className="role-icon">{ROLE_ICONS[r] || "👤"}</span> {r}
-              </button>
-            ))}
-          </div>
-        )}
+    <div className="fullscreen-center">
+      <div className="status-card">
+        <div style={{ fontSize:40, marginBottom:16 }}>🔍</div>
+        <div className="status-title" style={{ marginBottom:6 }}>Buscando tu perfil...</div>
+        <p className="status-text" style={{ marginBottom:20 }}>
+          Verificando tu número y cargando las salas disponibles.
+        </p>
+        <div style={{ width:"100%", background:"#E5E7EB", borderRadius:99, height:10, overflow:"hidden", marginBottom:10 }}>
+          <div style={{ height:"100%", width:pct+"%", background:"linear-gradient(90deg,#1557D6,#1B4FFF)", borderRadius:99, transition:"width 0.15s ease" }} />
+        </div>
+        <div style={{ fontSize:13, fontWeight:700, color:"#1557D6" }}>{pct}%</div>
       </div>
-
-      <div className="main">
-        {clientes.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-state-icon">🗓️</div>
-            <div className="empty-state-text">Sin salas disponibles</div>
-            <div className="empty-state-sub">No hay fechas habilitadas para tu rol en este momento.</div>
-          </div>
-        ) : clientes.map(brand => {
-          const stores = locales[activeRole][brand] || {};
-          return (
-            <div key={brand} style={{marginBottom: 36}}>
-              <h2 className="section-title">{storeIcon(brand)} {brand}</h2>
-              <p className="section-sub">Selecciona el local y fecha disponible</p>
-              <div className="cards-grid">
-                {Object.keys(stores).map(local => {
-                  const fechas = stores[local];
-                  return (
-                    <div className="store-card" key={local}>
-                      <div className="store-icon-wrap">
-                        <span>{storeIcon(brand)}</span>
-                      </div>
-                      <div className="store-name">{local}</div>
-                      <span className="store-tag">{brand}</span>
-                      <div className="store-dates">
-                        {Object.keys(fechas).map(fecha => {
-                          const yaRegistrado = fechasRegistradas.includes(fecha);
-                          return (
-                            <button
-                              key={fecha}
-                              className={`date-chip${yaRegistrado ? " disabled" : ""}`}
-                              title={yaRegistrado ? "Ya tienes registro para esta fecha" : ""}
-                              onClick={() => handleDateClick(local, fecha, brand, fechas[fecha])}
-                              disabled={yaRegistrado}
-                            >
-                              {yaRegistrado ? "🔒 " : "📅 "}{fecha}
-                              {yaRegistrado ? " (ya agendado)" : ""}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Modal de confirmación cuando se elige local + fecha */}
-      {selected && (
-        <div className="overlay" onClick={e => { if (e.target === e.currentTarget) { setSelected(null); setTurno(null); } }}>
-          <div className="modal">
-            <div className="modal-header">
-              <div className="modal-store-icon">{storeIcon(selected.brand)}</div>
-              <div className="modal-title">{selected.local}</div>
-              <div className="modal-subtitle">{activeRole} · {selected.brand}</div>
-            </div>
-            <div className="modal-body">
-              <div className="detail-row">
-                <span className="detail-label">Nombre</span>
-                <span className="detail-value">{nombre}</span>
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Fecha</span>
-                <span className="detail-value">📅 {selected.fecha}</span>
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">Rol</span>
-                <span className="detail-value">{ROLE_ICONS[activeRole] || "👤"} {activeRole}</span>
-              </div>
-              {selected.turnos && selected.turnos.length > 0 && (
-                <div className="detail-row" style={{flexDirection: "column", alignItems: "flex-start", gap: 10}}>
-                  <span className="detail-label">Turno</span>
-                  <div className="turno-row">
-                    {selected.turnos.map(t => (
-                      <button
-                        key={t}
-                        className={`turno-chip${turno === t ? " active" : ""}`}
-                        onClick={() => setTurno(t)}
-                      >{t}</button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="modal-actions">
-              <button className="btn-cancel" onClick={() => { setSelected(null); setTurno(null); }}>Cancelar</button>
-              <button
-                className="btn-confirm"
-                onClick={handleConfirm}
-                disabled={selected.turnos && selected.turnos.length > 0 && !turno}
-              >
-                Confirmar registro ✓
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════
-   FASE 3 — Pantalla de éxito
-═══════════════════════════════════════════════════════════ */
-function SuccessScreen({ booking, onNew }) {
-  return (
-    <div className="success-wrap">
-      <div className="success-icon">✅</div>
-      <h2 className="success-title">¡Registro exitoso!</h2>
-      <p className="success-sub">Tu asistencia ha sido agendada correctamente. Nos vemos en la sala.</p>
-      <div className="success-card">
-        <div className="success-card-row">
-          <span className="success-card-label">Nombre</span>
-          <span className="success-card-value">{booking.nombre}</span>
-        </div>
-        <div className="success-card-row">
-          <span className="success-card-label">Local</span>
-          <span className="success-card-value">{booking.local}</span>
-        </div>
-        <div className="success-card-row">
-          <span className="success-card-label">Fecha</span>
-          <span className="success-card-value">{booking.fecha}</span>
-        </div>
-        <div className="success-card-row">
-          <span className="success-card-label">Rol</span>
-          <span className="success-card-value">{booking.rol}</span>
-        </div>
-        {booking.turno && (
-          <div className="success-card-row">
-            <span className="success-card-label">Turno</span>
-            <span className="success-card-value">{booking.turno}</span>
-          </div>
-        )}
-        <div className="success-card-row">
-          <span className="success-card-label">Brand</span>
-          <span className="success-card-value">{booking.brand}</span>
-        </div>
-      </div>
-      <button className="btn-new" onClick={onNew}>Registrar otra persona</button>
     </div>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   APP ROOT
-═══════════════════════════════════════════════════════════ */
-function App() {
-  const [phase, setPhase]       = useState("phone");   // "phone" | "stores" | "success"
-  const [userData, setUserData] = useState(null);
-  const [booking, setBooking]   = useState(null);
-  const [toast, setToast]       = useState(null);
-  const [sending, setSending]   = useState(false);
-  const phoneRef                = useRef("");
+/* ════════ NOT FOUND — idéntica a BD ════════ */
+function NotFoundScreen({ digits, onRetry }) {
+  return (
+    <div className="fullscreen-center">
+      <div className="status-card">
+        <div className="status-icon">🔍</div>
+        <div className="status-title">Número no encontrado</div>
+        <p className="status-text">
+          El número <strong style={{ color:"#1A2340" }}>569{digits}</strong> no fue encontrado.<br/><br/>
+          Verifica que el número ingresado esté correcto.
+        </p>
+        <button className="btn-primary" onClick={onRetry}>Volver a intentar</button>
+      </div>
+    </div>
+  );
+}
 
-  const showToast = (msg, type = "info") => setToast({ msg, type });
+/* ════════ ERROR — idéntica a BD ════════ */
+function ErrorScreen({ onRetry }) {
+  return (
+    <div className="fullscreen-center">
+      <div className="status-card">
+        <div className="status-icon">⚠️</div>
+        <div className="status-title">Error de conexión</div>
+        <p className="status-text">No pudimos conectarnos al servidor. Revisa tu conexión e intenta de nuevo.</p>
+        <button className="btn-primary" onClick={onRetry}>Reintentar</button>
+      </div>
+    </div>
+  );
+}
 
-  const handleValidated = (data) => {
-    phoneRef.current = data.telefono;
-    setUserData(data);
-    setPhase("stores");
-  };
+/* ════════ SKELETON — idéntica a BD ════════ */
+function SkeletonGrid() {
+  return (
+    <div>
+      <div style={{ display:"flex", alignItems:"center", marginBottom:6 }}>
+        <div className="skeleton-block" style={{ width:200, height:20, borderRadius:6 }} />
+        <div className="skeleton-block" style={{ width:70, height:20, borderRadius:99, marginLeft:10 }} />
+      </div>
+      <div className="skeleton-block" style={{ width:260, height:15, borderRadius:6, marginBottom:24 }} />
+      <div className="cards-grid">
+        {Array.from({ length:4 }).map((_,i) => (
+          <div key={i} className="skeleton-card">
+            <div className="skeleton-block" style={{ width:56, height:56, borderRadius:14 }} />
+            <div className="skeleton-block" style={{ width:"75%", height:14, borderRadius:6 }} />
+            <div className="skeleton-block" style={{ width:"45%", height:12, borderRadius:6 }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-  const handleSelect = async (selection) => {
-    if (sending) return;
-    setSending(true);
-    const payload = {
-      telefono:    phoneRef.current,
-      local:       selection.local,
-      rol:         selection.rol,
-      cliente:     selection.brand,
-      fechaElegida: selection.fecha,
-      turno:       selection.turno
-    };
+/* ════════ MODAL SUPPLY — con fecha + turno ════════ */
+function ModalSupply({ store, fecha, turnos, userInfo, digits, fechasRegistradas, onClose, onSubmit }) {
+  const [turno, setTurno]         = useState(turnos && turnos.length === 1 ? turnos[0] : null);
+  const [submitting, setSubmitting] = useState(false);
+  const needsTurno = turnos && turnos.length > 0;
+
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
+  const handleConfirm = async () => {
+    if (needsTurno && !turno) return;
+    setSubmitting(true);
     try {
-      const res = await fetch(GAS_SUPPLY_BD_URL, {
-        method:  "POST",
+      await fetch(GAS_URL, {
+        method: "POST",
+        mode: "no-cors",
         headers: { "Content-Type": "text/plain" },
-        body:    JSON.stringify(payload),
-        mode:    "no-cors"
+        body: JSON.stringify({
+          tipo:         "supply",
+          local:        store.name,
+          telefono:     "569" + digits,
+          rol:          userInfo.rol,
+          cliente:      store.cliente,
+          fechaElegida: fecha,
+          turno:        turno || "–"
+        })
       });
-      // Con no-cors no podemos leer el response, asumimos ok
-      setBooking({ ...selection, telefono: phoneRef.current });
-      setPhase("success");
-    } catch (err) {
-      showToast("Error al guardar. Intenta nuevamente.", "error");
-    }
-    setSending(false);
-  };
-
-  const handleNew = () => {
-    setPhase("phone"); setUserData(null); setBooking(null);
-    phoneRef.current = "";
+    } catch(e) { console.warn("Error:", e.message); }
+    setSubmitting(false);
+    onSubmit(store, fecha, turno);
   };
 
   return (
-    <>
-      {/* Header */}
-      <header className="header">
-        <div className="header-logo">
-          <img
-            src="https://www.zubale.com/cl/wp-content/uploads/2023/12/logo_zubale_2023.png"
-            alt="Zubale"
-            style={{height:"32px", width:"auto", display:"block"}}
-          />
+    <div className="overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-header">
+          <div className="modal-store-icon">{store.emoji}</div>
+          <div className="modal-title">{store.name}</div>
+          <div className="modal-subtitle">{userInfo.rol} · {store.cliente}</div>
         </div>
-      </header>
+        <div className="modal-body">
+          <div className="warn-box" style={{ marginBottom:0 }}>
+            <span className="warn-box-icon">📋</span>
+            <span className="warn-box-text">
+              Al confirmar quedará registrada tu asistencia en <strong>{store.name}</strong> el día <strong>{fecha}</strong>. Asegúrate de poder asistir.
+            </span>
+          </div>
+          <div className="confirm-detail">
+            <strong>{userInfo.rol}</strong> · <strong>{store.cliente}</strong><br/>
+            Teléfono: <strong>569{digits}</strong><br/>
+            Fecha: <strong>{fecha}</strong>
+          </div>
+          {needsTurno && (
+            <>
+              <div className="turno-label">Selecciona turno:</div>
+              <div className="turno-row">
+                {turnos.map(t => (
+                  <button key={t} className={`turno-btn${turno===t?" active":""}`} onClick={()=>setTurno(t)}>{t}</button>
+                ))}
+              </div>
+            </>
+          )}
+          <button className="btn-primary" onClick={handleConfirm} disabled={submitting || (needsTurno && !turno)}>
+            {submitting ? "⏳ Enviando..." : "✓ Confirmar asistencia"}
+          </button>
+          <button className="btn-secondary" onClick={onClose}>Cancelar</button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-      {/* Fases */}
-      {phase === "phone" && (
-        <PhoneGate onValidated={handleValidated} />
+/* ════════ TOAST — idéntica a BD ════════ */
+function Toast({ store, fecha }) {
+  return (
+    <div className="toast">
+      <div className="toast-icon">✅</div>
+      <div className="toast-title">¡Tu registro fue enviado!</div>
+      <div className="toast-msg">
+        Tu disponibilidad en <strong>{store.name}</strong> el <strong>{fecha}</strong> quedó registrada. ¡Prepárate para asistir!
+      </div>
+    </div>
+  );
+}
+
+/* ════════ APP ════════ */
+function App() {
+  // "phone" | "loading" | "results" | "not_found" | "error"
+  const [phase, setPhase]               = useState("phone");
+  const [digits, setDigits]             = useState("");
+  const [userInfo, setUserInfo]         = useState(null);   // { rol, nombre }
+  const [locales, setLocales]           = useState({});     // estructura anidada
+  const [fechasRegistradas, setFechas]  = useState([]);
+  const [selected, setSelected]         = useState(null);   // { store, fecha, turnos }
+  const [toast, setToast]               = useState(null);
+
+  const handlePhoneSubmit = async (phoneDigits) => {
+    setDigits(phoneDigits);
+    setPhase("loading");
+    try {
+      const res = await fetch(`${GAS_URL}?action=getSupplyUserAndStores&telefono=569${phoneDigits}`)
+        .then(r => r.json());
+
+      if (res.status === "ok") {
+        setUserInfo({ rol: res.nombre ? Object.keys(res.locales||{})[0] : null, nombre: res.nombre, localesData: res.locales });
+        setLocales(res.locales || {});
+        setFechas(res.fechasRegistradas || []);
+        setPhase("results");
+      } else if (res.status === "not_found") {
+        setPhase("not_found");
+      } else {
+        setPhase("error");
+      }
+    } catch {
+      setPhase("error");
+    }
+  };
+
+  const handleConfirm = (store, fecha, turno) => {
+    setSelected(null);
+    setToast({ store, fecha });
+    setTimeout(() => setToast(null), 10000);
+    // Agregar la fecha confirmada a la lista local para deshabilitar el chip
+    setFechas(prev => [...prev, fecha]);
+  };
+
+  const handleRetry = () => {
+    setPhase("phone"); setUserInfo(null); setLocales({}); setSelected(null);
+  };
+
+  // Obtener rol del usuario (primer rol disponible en locales)
+  const rol = Object.keys(locales)[0] || "";
+
+  // Obtener clientes (brands) para ese rol
+  const clientes = rol ? Object.keys(locales[rol] || {}) : [];
+
+  return (
+    <>
+      <Header />
+      {phase === "phone"     && <PhoneScreen onSubmit={handlePhoneSubmit} />}
+      {phase === "loading"   && <LoadingScreen />}
+      {phase === "not_found" && <NotFoundScreen digits={digits} onRetry={handleRetry} />}
+      {phase === "error"     && <ErrorScreen onRetry={handleRetry} />}
+
+      {phase === "results" && (
+        <>
+          <section className="hero">
+            <h1>Salas disponibles para ti</h1>
+            <p>Hola <strong>{userInfo?.nombre}</strong>, como <strong>{rol}</strong> estas son tus opciones.</p>
+          </section>
+          <main className="main">
+            {clientes.length === 0 ? (
+              <div className="empty">
+                <div className="empty-icon">🗓️</div>
+                <div className="empty-title">Sin salas disponibles</div>
+                <div className="empty-text">No hay fechas habilitadas para tu rol en este momento.</div>
+              </div>
+            ) : clientes.map(cliente => {
+              const stores = locales[rol][cliente] || {};
+              return (
+                <div className="client-group" key={cliente}>
+                  <div className="client-header">
+                    <span className="client-label">{getEmoji(cliente)} {cliente}</span>
+                    <div className="client-divider" />
+                  </div>
+                  <div className="cards-grid">
+                    {Object.keys(stores).map(storeName => {
+                      const fechas = stores[storeName];
+                      return (
+                        <div className="store-card" key={storeName}>
+                          <div className="store-icon-wrap">
+                            <span className="store-emoji">{getEmoji(cliente)}</span>
+                          </div>
+                          <div className="store-name">{storeName}</div>
+                          <div className="date-chips">
+                            {Object.keys(fechas).map(fecha => {
+                              const taken = fechasRegistradas.includes(fecha);
+                              return (
+                                <button
+                                  key={fecha}
+                                  className={`date-chip${taken?" taken":""}`}
+                                  disabled={taken}
+                                  onClick={() => !taken && setSelected({
+                                    store: { name: storeName, emoji: getEmoji(cliente), cliente },
+                                    fecha,
+                                    turnos: fechas[fecha]
+                                  })}
+                                >
+                                  {taken ? "🔒 " : "📅 "}{fecha}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+            <div className="warn-box" style={{ marginTop:28 }}>
+              <span className="warn-box-icon">⚠️</span>
+              <span className="warn-box-text">
+                Recuerda que es importante que para seleccionar una sala, te encuentres previamente <strong>capacitado</strong>.
+              </span>
+            </div>
+          </main>
+          <footer className="footer">© 2025 Zubale</footer>
+        </>
       )}
 
-      {phase === "stores" && userData && (
-        <StoreSelector
-          userData={userData}
-          onSelect={handleSelect}
+      {selected && (
+        <ModalSupply
+          store={selected.store}
+          fecha={selected.fecha}
+          turnos={selected.turnos}
+          userInfo={{ rol, nombre: userInfo?.nombre }}
+          digits={digits}
+          fechasRegistradas={fechasRegistradas}
+          onClose={() => setSelected(null)}
+          onSubmit={handleConfirm}
         />
       )}
 
-      {phase === "success" && booking && (
-        <SuccessScreen booking={booking} onNew={handleNew} />
-      )}
-
-      {/* Overlay enviando */}
-      {sending && (
-        <div className="overlay">
-          <div style={{textAlign:"center", color:"#fff"}}>
-            <div className="spinner" style={{width:40, height:40, borderWidth:4, margin:"0 auto 16px"}}/>
-            <div style={{fontWeight:700, fontSize:16}}>Guardando registro...</div>
-          </div>
-        </div>
-      )}
-
-      {/* Toast */}
-      {toast && <Toast msg={toast.msg} type={toast.type} onDone={() => setToast(null)} />}
+      {toast && <Toast store={toast.store} fecha={toast.fecha} />}
     </>
   );
 }
