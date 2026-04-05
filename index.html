@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zubale</title>
+  <title>Zubale Supply – Registro</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
   <style>
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -23,6 +22,7 @@
       --zubale-muted:       #6B7A9A;
       --white:              #FFFFFF;
       --success:            #10B981;
+      --danger:             #EF4444;
       --warning-bg:         #FEF9C3;
       --warning-border:     #FDE047;
       --warning-text:       #854D0E;
@@ -34,10 +34,9 @@
       background: var(--zubale-gray);
       color: var(--zubale-text);
     }
-
     #root { min-height: 100vh; }
 
-
+    /* ──── HEADER ──────────────────────────────────────── */
     .header {
       background: var(--white);
       padding: 0 32px;
@@ -50,14 +49,7 @@
       top: 0;
       z-index: 50;
     }
-
-    .header-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-
+    .header-logo { display: flex; align-items: center; gap: 10px; }
     .header-badge {
       background: var(--zubale-blue-light);
       color: var(--zubale-blue);
@@ -68,965 +60,760 @@
       border: 1px solid #BFDBFE;
     }
 
-    /* ============================================
-       HERO SECTION
-    ============================================ */
+    /* ──── HERO ────────────────────────────────────────── */
     .hero {
       background: var(--zubale-blue);
       color: var(--white);
       padding: 36px 24px 28px;
       text-align: center;
     }
-
     .hero h1 {
-      font-size: clamp(22px, 4vw, 32px);
+      font-size: clamp(20px, 4vw, 30px);
       font-weight: 800;
       margin-bottom: 8px;
       line-height: 1.2;
     }
-
     .hero p {
       font-size: 15px;
       opacity: 0.85;
       max-width: 480px;
-      margin: 0 auto 28px;
+      margin: 0 auto;
       line-height: 1.5;
     }
 
-    /* ============================================
-       ROLE SELECTOR
-    ============================================ */
-    .role-selector {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
+    /* ──── PHONE GATE ──────────────────────────────────── */
+    .gate-wrap {
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 80px 20px 60px;
+    }
+    .gate-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px 36px;
+      box-shadow: 0 4px 28px rgba(21,87,214,0.10);
+    }
+    .gate-icon {
+      width: 72px; height: 72px;
+      background: var(--zubale-blue-light);
+      border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .gate-icon img { width: 64px; height: 64px; object-fit: contain; }
+    .gate-title {
+      font-size: 20px; font-weight: 800;
+      text-align: center; margin-bottom: 6px;
+    }
+    .gate-sub {
+      font-size: 14px; color: var(--zubale-muted);
+      text-align: center; margin-bottom: 28px; line-height: 1.5;
+    }
+    .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .input-label { font-size: 13px; font-weight: 600; color: var(--zubale-text); }
+    .phone-input-row {
+      display: flex; align-items: center;
+      border: 2px solid var(--zubale-gray2);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: var(--white);
+    }
+    .phone-input-row:focus-within {
+      border-color: var(--zubale-blue);
+      box-shadow: 0 0 0 3px rgba(21,87,214,0.12);
+    }
+    .phone-input-row.error-border { border-color: var(--danger); }
+    .phone-prefix {
+      background: var(--zubale-gray);
+      border-right: 2px solid var(--zubale-gray2);
+      padding: 0 14px;
+      height: 48px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--zubale-text);
+      display: flex; align-items: center;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .phone-input {
+      flex: 1;
+      height: 48px;
+      border: none;
+      padding: 0 14px;
+      font-size: 15px;
+      font-weight: 600;
+      outline: none;
+      background: var(--white);
+      letter-spacing: 0.5px;
+      font-family: inherit;
+    }
+    .phone-input::placeholder { color: var(--zubale-muted); font-weight: 400; }
+    .error-msg {
+      font-size: 13px; color: var(--danger);
+      font-weight: 500; margin-top: 4px;
+    }
+    .btn-primary {
+      width: 100%;
+      height: 52px;
+      background: var(--zubale-blue);
+      color: var(--white);
+      border: none; border-radius: 12px;
+      font-size: 16px; font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary:hover { background: var(--zubale-blue2); transform: translateY(-1px); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* ──── BIENVENIDA ──────────────────────────────────── */
+    .welcome-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #D1FAE5; color: #065F46;
+      font-size: 13px; font-weight: 700;
+      padding: 6px 14px; border-radius: 99px;
+      margin-bottom: 12px;
     }
 
+    /* ──── ROLE SELECTOR ───────────────────────────────── */
+    .role-selector {
+      display: flex; gap: 10px; justify-content: center;
+      flex-wrap: wrap; padding: 28px 24px 0;
+    }
     .role-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 28px;
-      border-radius: 999px;
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 999px;
       border: 2px solid rgba(255,255,255,0.35);
       background: rgba(255,255,255,0.12);
       color: var(--white);
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
       backdrop-filter: blur(4px);
-      letter-spacing: 0.2px;
     }
-
     .role-btn:hover {
       background: rgba(255,255,255,0.22);
       border-color: rgba(255,255,255,0.6);
       transform: translateY(-2px);
     }
-
     .role-btn.active {
-      background: var(--white);
-      color: var(--zubale-blue);
+      background: var(--white); color: var(--zubale-blue);
       border-color: var(--white);
       box-shadow: 0 4px 18px rgba(0,0,0,0.18);
       transform: translateY(-2px);
     }
 
-    .role-icon { font-size: 18px; }
-
-    /* ============================================
-       MAIN CONTENT
-    ============================================ */
+    /* ──── MAIN CONTENT ────────────────────────────────── */
     .main {
-      max-width: 1100px;
-      margin: 0 auto;
+      max-width: 1100px; margin: 0 auto;
       padding: 32px 20px 60px;
     }
+    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .section-sub { font-size: 14px; color: var(--zubale-muted); margin-bottom: 24px; }
 
-    .section-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--zubale-text);
-      margin-bottom: 6px;
-    }
-
-    .section-sub {
-      font-size: 14px;
-      color: var(--zubale-muted);
-      margin-bottom: 24px;
-    }
-
-    /* ============================================
-       CARDS GRID
-    ============================================ */
+    /* ──── CARDS GRID ──────────────────────────────────── */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
-
-    @media (max-width: 900px) {
-      .cards-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 480px) {
-      .cards-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-    }
+    @media (max-width: 900px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .cards-grid { grid-template-columns: 1fr 1fr; gap: 10px; } }
 
     .store-card {
       background: var(--white);
-      border-radius: 16px;
-      padding: 22px 16px 18px;
-      cursor: pointer;
-      border: 2px solid transparent;
+      border-radius: 16px; padding: 22px 16px 18px;
+      cursor: pointer; border: 2px solid transparent;
       box-shadow: 0 2px 10px rgba(0,0,0,0.06);
       transition: all 0.22s cubic-bezier(.4,0,.2,1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      text-align: center;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 12px; text-align: center;
     }
-
     .store-card:hover {
       border-color: var(--zubale-blue);
       box-shadow: 0 6px 24px rgba(21,87,214,0.15);
       transform: translateY(-3px);
     }
-
-    .store-card:active {
-      transform: scale(0.97);
-    }
-
+    .store-card:active { transform: scale(0.97); }
     .store-icon-wrap {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
-      background: var(--zubale-blue-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      transition: background 0.2s;
+      width: 56px; height: 56px;
+      border-radius: 14px; background: var(--zubale-blue-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; transition: background 0.2s;
     }
-
-    .store-card:hover .store-icon-wrap {
-      background: var(--zubale-blue);
-    }
-
-    .store-card:hover .store-icon-wrap .store-emoji {
-      filter: brightness(0) invert(1);
-    }
-
-    .store-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--zubale-text);
-      line-height: 1.3;
-    }
-
+    .store-card:hover .store-icon-wrap { background: var(--zubale-blue); }
+    .store-name { font-size: 14px; font-weight: 700; line-height: 1.3; }
     .store-tag {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 99px;
-      background: var(--zubale-blue-light);
-      color: var(--zubale-blue);
+      font-size: 11px; font-weight: 600;
+      padding: 3px 10px; border-radius: 99px;
+      background: var(--zubale-blue-light); color: var(--zubale-blue);
     }
-
-    .store-cta {
-      font-size: 12px;
-      color: var(--zubale-blue);
-      font-weight: 600;
+    .store-dates {
+      display: flex; flex-direction: column; gap: 4px; width: 100%;
     }
+    .date-chip {
+      font-size: 11px; font-weight: 600;
+      padding: 4px 8px; border-radius: 6px;
+      background: #EFF6FF; color: var(--zubale-blue);
+      cursor: pointer; border: 1px solid #BFDBFE;
+      transition: all 0.15s;
+    }
+    .date-chip:hover { background: var(--zubale-blue); color: #fff; }
+    .date-chip.disabled {
+      background: var(--zubale-gray2);
+      color: var(--zubale-muted);
+      cursor: not-allowed;
+      border-color: var(--zubale-gray2);
+      opacity: 0.7;
+      text-decoration: line-through;
+    }
+    .date-chip.disabled:hover { background: var(--zubale-gray2); color: var(--zubale-muted); }
 
-    /* ============================================
-       MODAL OVERLAY
-    ============================================ */
+    /* ──── MODAL ───────────────────────────────────────── */
     .overlay {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(17,9,40,0.55);
       backdrop-filter: blur(3px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      padding: 20px;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100; padding: 20px;
       animation: fadeIn 0.18s ease;
     }
-
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
     .modal {
       background: var(--white);
-      border-radius: 24px;
-      width: 100%;
-      max-width: 420px;
+      border-radius: 24px; width: 100%; max-width: 420px;
       overflow: hidden;
       box-shadow: 0 24px 60px rgba(0,0,0,0.22);
       animation: slideUp 0.22s cubic-bezier(.4,0,.2,1);
     }
-
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(30px) scale(0.97); }
-      to   { opacity: 1; transform: translateY(0)   scale(1); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
-
     .modal-header {
       background: var(--zubale-blue);
-      padding: 24px 24px 20px;
-      color: var(--white);
+      padding: 24px 24px 20px; color: var(--white);
     }
-
     .modal-store-icon {
       width: 48px; height: 48px;
       background: rgba(255,255,255,0.18);
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 12px;
     }
-
-    .modal-title {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 4px;
+    .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .modal-subtitle { font-size: 14px; opacity: 0.85; }
+    .modal-body { padding: 24px; }
+    .detail-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid #F1F5F9;
     }
-
-    .modal-subtitle {
-      font-size: 13px;
-      opacity: 0.8;
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { font-size: 13px; color: var(--zubale-muted); font-weight: 500; }
+    .detail-value { font-size: 14px; font-weight: 700; color: var(--zubale-text); }
+    .modal-actions {
+      padding: 0 24px 24px;
+      display: flex; gap: 10px;
     }
-
-    .modal-body { padding: 20px 24px 28px; }
-
-    /* WARNING BOX */
-    .warning-box {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      background: var(--warning-bg);
-      border: 1.5px solid var(--warning-border);
-      border-radius: 12px;
-      padding: 14px 14px;
-      margin-bottom: 20px;
-    }
-
-    .warning-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-
-    .warning-text {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--warning-text);
-      line-height: 1.45;
-    }
-
-    /* PHONE INPUT */
-    .input-label {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--zubale-text);
-      margin-bottom: 6px;
-      display: block;
-    }
-
-    .input-hint {
-      font-size: 12px;
-      color: var(--zubale-muted);
-      margin-bottom: 10px;
-    }
-
-    .phone-input-wrap {
-      display: flex;
-      align-items: center;
-      border: 2px solid var(--zubale-gray2);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: border-color 0.2s;
-      margin-bottom: 20px;
-      background: var(--white);
-    }
-
-    .phone-input-wrap:focus-within {
-      border-color: var(--zubale-blue);
-      box-shadow: 0 0 0 3px rgba(21,87,214,0.12);
-    }
-
-    .phone-prefix {
-      padding: 0 14px;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--zubale-dark);
-      border-right: 2px solid var(--zubale-gray2);
-      height: 48px;
-      display: flex;
-      align-items: center;
-      background: var(--zubale-gray);
-    }
-
-    .phone-input {
-      flex: 1;
-      border: none;
-      outline: none;
-      padding: 0 14px;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--zubale-dark);
-      height: 48px;
-      font-family: inherit;
-      letter-spacing: 0.5px;
-    }
-
-    .phone-input::placeholder { color: var(--zubale-muted); font-weight: 400; }
-
-    /* BUTTONS */
-    .btn-submit {
-      width: 100%;
-      padding: 15px;
-      border-radius: 12px;
-      border: none;
-      background: var(--zubale-blue);
-      color: var(--white);
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 0.3px;
-      box-shadow: 0 4px 14px rgba(21,87,214,0.3);
-    }
-
-    .btn-submit:hover:not(:disabled) {
-      transform: translateY(-1px);
-      background: var(--zubale-blue2);
-      box-shadow: 0 6px 20px rgba(21,87,214,0.4);
-    }
-
-    .btn-submit:active:not(:disabled) { transform: scale(0.98); }
-
-    .btn-submit:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
     .btn-cancel {
-      width: 100%;
-      padding: 12px;
-      border-radius: 12px;
-      border: 2px solid var(--zubale-gray2);
-      background: var(--white);
-      color: var(--zubale-muted);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: all 0.2s;
-      font-family: inherit;
+      flex: 1; height: 48px;
+      background: var(--zubale-gray); color: var(--zubale-text);
+      border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
     }
+    .btn-cancel:hover { background: var(--zubale-gray2); }
+    .btn-confirm {
+      flex: 2; height: 48px;
+      background: var(--zubale-blue); color: var(--white);
+      border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-confirm:hover { background: var(--zubale-blue2); }
+    .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .btn-cancel:hover { border-color: var(--zubale-blue); color: var(--zubale-blue); }
+    /* ──── SUCCESS SCREEN ──────────────────────────────── */
+    .success-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 70vh;
+      padding: 40px 24px; text-align: center;
+    }
+    .success-icon {
+      width: 88px; height: 88px;
+      background: #D1FAE5; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 44px; margin-bottom: 24px;
+      animation: popIn 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .success-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; color: var(--zubale-text); }
+    .success-sub { font-size: 15px; color: var(--zubale-muted); margin-bottom: 28px; max-width: 360px; line-height: 1.5; }
+    .success-card {
+      background: var(--white);
+      border-radius: 16px; padding: 20px 28px;
+      box-shadow: 0 4px 20px rgba(21,87,214,0.10);
+      width: 100%; max-width: 360px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+    .success-card-row {
+      display: flex; justify-content: space-between;
+      padding: 8px 0; border-bottom: 1px solid #F1F5F9;
+      font-size: 14px;
+    }
+    .success-card-row:last-child { border-bottom: none; }
+    .success-card-label { color: var(--zubale-muted); font-weight: 500; }
+    .success-card-value { font-weight: 700; color: var(--zubale-text); }
+    .btn-new {
+      height: 52px; padding: 0 32px;
+      background: var(--zubale-blue); color: var(--white);
+      border: none; border-radius: 12px;
+      font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-new:hover { background: var(--zubale-blue2); }
 
-    /* ============================================
-       TOAST NOTIFICATION
-    ============================================ */
+    /* ──── TOAST ───────────────────────────────────────── */
     .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(0);
-      background: var(--zubale-blue-dark);
-      color: var(--white);
-      padding: 18px 24px;
-      border-radius: 18px;
-      max-width: 360px;
-      width: calc(100% - 40px);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-      z-index: 200;
-      animation: toastIn 0.35s cubic-bezier(.4,0,.2,1);
-      border-left: 4px solid var(--success);
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      background: #1E293B; color: #fff;
+      padding: 12px 24px; border-radius: 12px;
+      font-size: 14px; font-weight: 600;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      z-index: 999; animation: toastIn 0.3s ease;
+      white-space: nowrap;
     }
-
+    .toast.error-toast { background: #DC2626; }
+    .toast.success-toast { background: #059669; }
     @keyframes toastIn {
-      from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.96); }
-      to   { opacity: 1; transform: translateX(-50%) translateY(0)    scale(1); }
+      from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
-    .toast-icon { font-size: 28px; margin-bottom: 8px; }
-
-    .toast-title {
-      font-size: 15px;
-      font-weight: 800;
-      margin-bottom: 6px;
-      color: var(--white);
+    /* ──── SPINNER ─────────────────────────────────────── */
+    .spinner {
+      display: inline-block; width: 20px; height: 20px;
+      border: 3px solid rgba(255,255,255,0.35);
+      border-radius: 50%; border-top-color: #fff;
+      animation: spin 0.7s linear infinite;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .toast-msg {
-      font-size: 13px;
-      line-height: 1.5;
-      color: rgba(255,255,255,0.8);
-    }
-
-    /* ============================================
-       EMPTY STATE
-    ============================================ */
-    .empty {
-      text-align: center;
-      padding: 60px 20px;
+    /* ──── EMPTY STATE ─────────────────────────────────── */
+    .empty-state {
+      text-align: center; padding: 60px 20px;
       color: var(--zubale-muted);
     }
+    .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-state-text { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .empty-state-sub  { font-size: 14px; }
 
-    .empty-icon { font-size: 48px; margin-bottom: 12px; }
-    .empty-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--zubale-text); }
-    .empty-text  { font-size: 14px; }
-
-    /* ============================================
-       FOOTER
-    ============================================ */
-    .footer {
-      text-align: center;
-      padding: 20px;
-      color: var(--zubale-muted);
-      font-size: 12px;
-    }
-
-    /* ============================================
-       MISC
-    ============================================ */
-    .pill-count {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--zubale-blue-light);
-      color: var(--zubale-blue);
-      font-size: 13px;
-      font-weight: 700;
-      padding: 4px 14px;
-      border-radius: 99px;
-      margin-left: 8px;
-    }
-
-    /* ============================================
-       CLIENTE GROUP HEADER
-    ============================================ */
-    .client-group { margin-bottom: 40px; }
-
-    .client-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .client-label {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      color: var(--zubale-text);
-      white-space: nowrap;
-    }
-
-    .client-divider {
-      flex: 1;
-      height: 1px;
-      background: var(--zubale-gray2);
-    }
-
-    .client-count {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      font-size: 12px;
-      color: var(--zubale-muted);
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .client-reminder {
-      margin-top: 14px;
-      padding: 12px 16px;
-      background: var(--zubale-blue-light);
-      border-left: 3px solid var(--zubale-blue);
-      border-radius: 0 8px 8px 0;
-      font-size: 13px;
-      color: var(--zubale-blue-deeper);
-      line-height: 1.5;
-    }
-
-    /* ── FECHA / TURNO SELECTOR ── */
-    .fecha-group {
-      margin-bottom: 14px;
-    }
-
-    .fecha-titulo {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--zubale-text);
-      margin-bottom: 8px;
-    }
-
+    /* ──── TURNO SELECTOR ──────────────────────────────── */
     .turno-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
     }
-
-    .turno-btn {
-      padding: 8px 18px;
-      border-radius: 99px;
-      border: 2px solid var(--zubale-gray2);
-      background: var(--white);
-      color: var(--zubale-text);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.18s;
-      font-family: inherit;
+    .turno-chip {
+      font-size: 12px; font-weight: 700; padding: 5px 14px;
+      border-radius: 8px; background: #EFF6FF;
+      color: var(--zubale-blue); cursor: pointer;
+      border: 1.5px solid #BFDBFE; transition: all 0.15s;
     }
-
-    .turno-btn:hover {
-      border-color: var(--zubale-blue);
-      color: var(--zubale-blue);
-    }
-
-    .turno-btn.active {
-      background: var(--zubale-blue);
-      border-color: var(--zubale-blue);
-      color: var(--white);
-      box-shadow: 0 3px 10px rgba(21,87,214,0.25);
-    }
-
-    /* ── SKELETON LOADING ── */
-    @keyframes shimmer {
-      0%   { background-position: -600px 0; }
-      100% { background-position:  600px 0; }
-    }
-
-    .skeleton-card {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 22px 16px 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-    }
-
-    .skeleton-block {
-      border-radius: 8px;
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e8ff 50%, #f0f0f0 75%);
-      background-size: 600px 100%;
-      animation: shimmer 1.4s infinite linear;
+    .turno-chip:hover, .turno-chip.active {
+      background: var(--zubale-blue); color: #fff; border-color: var(--zubale-blue);
     }
   </style>
 </head>
 <body>
 <div id="root"></div>
-
 <script type="text/babel">
-const { useState, useEffect, useRef } = React;
+const { useState, useEffect, useCallback, useRef } = React;
 
+/* ── URL del nuevo GAS (supply-bd) ─────────────────────────── */
+const GAS_SUPPLY_BD_URL = "https://script.google.com/macros/s/AKfycbzqHnM4KVPz9tBJnsMLWrExjWydyOZ4Mcix4qAVFZ0B7-AjLzFYtP4vNKJtlKi3iqY/exec";
 
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwnuOQgmtmqOBEOLcZQenPy8hvm7Lm1fHUnygIWLYgtUEt_AXzUekYBfwTqSf_42-rh/exec";
-
-const ROLE_EMOJI = { Picker: "🛒", Shopper: "🛍️", Driver: "🚙" };
-const ROLE_ICONS = { Picker: "📋", Shopper: "🛍️", Driver: "🚗" };
-
-function Header() {
-  return (
-    <header className="header">
-      <div className="header-logo">
-        <img
-          src="https://www.zubale.com/cl/wp-content/uploads/2023/12/logo_zubale_2023.png"
-          alt="Zubale"
-          style={{ height: "32px", width: "auto", display: "block" }}
-        />
-      </div>
-    </header>
-  );
+/* ── Helpers ────────────────────────────────────────────────── */
+const STORE_ICONS = {
+  "WALMART":  "🏪", "TOTTUS": "🛒", "CENCOSUD": "🏬",
+  "SMU": "🛍️", "UNIMARC": "🏪", "JUMBO": "🛒"
+};
+function storeIcon(brand) {
+  if (!brand) return "🏪";
+  const up = String(brand).toUpperCase();
+  for (const k in STORE_ICONS) if (up.includes(k)) return STORE_ICONS[k];
+  return "🏪";
 }
+const ROLE_ICONS = { "Picker": "📦", "Driver": "🚗", "Shopper": "🛍️" };
 
-function StoreCard({ store, onSelect }) {
-  return (
-    <div className="store-card" onClick={() => onSelect(store)}>
-      <div className="store-icon-wrap">
-        <span className="store-emoji">{store.emoji}</span>
-      </div>
-      <div>
-        <div className="store-name">{store.name}</div>
-      </div>
-      <span className="store-cta">Reservar →</span>
-    </div>
-  );
-}
-
-function Modal({ store, role, onClose, onSubmit }) {
-  const [fechaElegida, setFechaElegida] = useState(null);
-  const [turnoElegido, setTurnoElegido] = useState(null);
-  const [phone, setPhone]               = useState("");
-  const [submitting, setSubmitting]     = useState(false);
-  const inputRef = useRef(null);
-
-  // Fechas disponibles para esta tienda: { "01/04/2026": ["Mañana","Tarde"], ... }
-  const fechas = store.fechas || {};
-  const fechasKeys = Object.keys(fechas);
-
-  // Paso actual: "fecha" | "phone"
-  const paso = fechaElegida && (fechas[fechaElegida].length === 0 || turnoElegido) ? "phone" : "fecha";
-
+function Toast({ msg, type, onDone }) {
   useEffect(() => {
-    if (paso === "phone") setTimeout(() => inputRef.current?.focus(), 100);
-    const handleKey = (e) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [paso]);
+    const t = setTimeout(onDone, 3000);
+    return () => clearTimeout(t);
+  }, []);
+  const cls = type === "error" ? "toast error-toast" : type === "success" ? "toast success-toast" : "toast";
+  return <div className={cls}>{msg}</div>;
+}
 
-  const handlePhone = (e) => {
-    const val = e.target.value.replace(/\D/g, "").slice(0, 9);
-    setPhone(val);
-  };
+/* ═══════════════════════════════════════════════════════════
+   FASE 1 — Validador de teléfono
+═══════════════════════════════════════════════════════════ */
+function PhoneGate({ onValidated }) {
+  const [phone, setPhone]   = useState("");
+  const [error, setError]   = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (phone.length < 8) return;
-    setSubmitting(true);
+    const clean = phone.replace(/\D/g, "");
+    if (clean.length < 7) { setError("Ingresa un teléfono válido."); return; }
+    const fullPhone = "569" + clean;
+    setError(""); setLoading(true);
     try {
-      await fetch(GAS_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          local:        store.name,
-          telefono:     "569" + phone,
-          rol:          role,
-          cliente:      store.cliente,
-          fechaElegida: fechaElegida,
-          turno:        turnoElegido || "–",
-          fecha:        new Date().toLocaleString("es-CL")
-        })
-      });
-    } catch (e) {
-      console.warn("Error al enviar:", e.message);
+      const url = `${GAS_SUPPLY_BD_URL}?action=getUserAndStores&telefono=${encodeURIComponent(fullPhone)}`;
+      const res = await fetch(url).then(r => r.json());
+      if (res.status === "ok") {
+        onValidated({ telefono: fullPhone, nombre: res.nombre, locales: res.locales, fechasRegistradas: res.fechasRegistradas || [] });
+      } else if (res.status === "not_found") {
+        setError("Teléfono no registrado en el sistema.");
+      } else {
+        setError("Error al verificar. Intenta nuevamente.");
+      }
+    } catch {
+      setError("No se pudo conectar. Verifica tu conexión.");
     }
-    setSubmitting(false);
-    onSubmit(store, phone);
+    setLoading(false);
   };
 
-  const isValid = phone.length >= 8;
+  const handleKey = e => { if (e.key === "Enter") handleSubmit(); };
 
-  // Formatear fecha para mostrar: "01/04/2026" → "Martes 01 Abr"
-  const formatFecha = (str) => {
-    const meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
-    const dias  = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
-    const [d, m, y] = str.split("/");
-    const dt = new Date(y, m-1, d);
-    return `${dias[dt.getDay()]} ${d} ${meses[m-1]}`;
+  return (
+    <div className="gate-wrap">
+      <div className="gate-card">
+        <div className="gate-icon">
+          <img src="https://res.cloudinary.com/dc9lx1ruu/image/upload/v1775076708/1200x630wa_-_copia-removebg-preview_my7zpm.png" alt="Zubale" />
+        </div>
+        <h2 className="gate-title">Ingresa tu número de teléfono registrado</h2>
+        <p className="gate-sub">Te mostraremos las salas disponibles para HOY.</p>
+        <div className="input-group">
+          <label className="input-label">Número de teléfono</label>
+          <div className={`phone-input-row${error ? " error-border" : ""}`}>
+            <span className="phone-prefix">569</span>
+            <input
+              className="phone-input"
+              type="tel"
+              inputMode="numeric"
+              placeholder="XXXX XXXX"
+              value={phone}
+              onChange={e => { setPhone(e.target.value.replace(/\D/g,"")); setError(""); }}
+              onKeyDown={handleKey}
+              maxLength={8}
+              autoFocus
+            />
+          </div>
+          {error && <p className="error-msg">⚠️ {error}</p>}
+        </div>
+        <button className="btn-primary" onClick={handleSubmit} disabled={loading}>
+          {loading ? <span className="spinner"/> : <>Buscar mis salas →</>}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FASE 2 — Selección de local, fecha y turno
+═══════════════════════════════════════════════════════════ */
+function StoreSelector({ userData, onSelect }) {
+  const { nombre, locales, fechasRegistradas } = userData;
+  const roles = Object.keys(locales || {});
+  const [activeRole, setActiveRole] = useState(roles[0] || "");
+  const [selected, setSelected]     = useState(null);  // { local, fecha, brand }
+  const [turno, setTurno]           = useState(null);
+
+  // Clientes (brands) para el rol activo
+  const clientes = activeRole && locales[activeRole] ? Object.keys(locales[activeRole]) : [];
+
+  const handleDateClick = (local, fecha, brand, turnos) => {
+    if (fechasRegistradas.includes(fecha)) return; // bloqueado
+    setSelected({ local, fecha, brand, turnos });
+    setTurno(turnos && turnos.length === 1 ? turnos[0] : null);
   };
 
-  return (
-    <div className="overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="modal">
-        <div className="modal-header">
-          <div className="modal-store-icon">{store.emoji}</div>
-          <div className="modal-title">{store.name}</div>
-          <div className="modal-subtitle">
-            {paso === "fecha"
-              ? `Selecciona fecha y turno • ${role}`
-              : `${fechaElegida}${turnoElegido ? " · " + turnoElegido : ""} • ${role}`}
-          </div>
-        </div>
-
-        <div className="modal-body">
-
-          {/* ── PASO 1: Elegir fecha y turno ── */}
-          {paso === "fecha" && (
-            <>
-              <p className="input-label" style={{marginBottom:14}}>¿Cuándo quieres asistir?</p>
-
-              {fechasKeys.length === 0 ? (
-                <div style={{
-                  textAlign: "center",
-                  padding: "24px 0 16px",
-                  color: "#6B7A9A",
-                  fontSize: "14px"
-                }}>
-                  <div style={{fontSize:"36px", marginBottom:"10px"}}>📅</div>
-                  <strong style={{display:"block", marginBottom:"4px", color:"#1A2340"}}>Sin fechas disponibles</strong>
-                  No hay citas configuradas para esta sala en este momento. Volvé a intentarlo más tarde.
-                </div>
-              ) : (
-                fechasKeys.map(fecha => (
-                  <div key={fecha} className="fecha-group">
-                    <div className="fecha-titulo">📅 {formatFecha(fecha)}</div>
-                    <div className="turno-row">
-                      {fechas[fecha].length > 0 ? (
-                        fechas[fecha].map(turno => (
-                          <button
-                            key={turno}
-                            className={`turno-btn ${fechaElegida === fecha && turnoElegido === turno ? "active" : ""}`}
-                            onClick={() => { setFechaElegida(fecha); setTurnoElegido(turno); }}
-                          >
-                            {turno}
-                          </button>
-                        ))
-                      ) : (
-                        <button
-                          className={`turno-btn ${fechaElegida === fecha ? "active" : ""}`}
-                          onClick={() => { setFechaElegida(fecha); setTurnoElegido(null); }}
-                        >
-                          Disponible
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))
-              )}
-
-              <div style={{
-                marginTop: "14px",
-                marginBottom: "12px",
-                display: "flex",
-                alignItems: "flex-start",
-                gap: "10px",
-                background: "#FEF9C3",
-                border: "1.5px solid #FDE047",
-                borderRadius: "12px",
-                padding: "12px 14px"
-              }}>
-                <span style={{fontSize:"18px", flexShrink:0}}>⚠️</span>
-                <span style={{fontSize:"13px", fontWeight:600, color:"#854D0E", lineHeight:"1.5"}}>
-                  Las citas mostradas son las que tenemos disponibles. Recuerda que si reservas a través de la <strong>APP Zubale</strong> tienes mayor preferencia.
-                </span>
-              </div>
-
-              <button className="btn-cancel" onClick={onClose}>Cancelar</button>
-            </>
-          )}
-
-          {/* ── PASO 2: Ingresar teléfono ── */}
-          {paso === "phone" && (
-            <>
-              <div className="warning-box">
-                <span className="warning-icon">⚠️</span>
-                <span className="warning-text">
-                  Asistencia seleccionada: <strong>{formatFecha(fechaElegida)}{turnoElegido ? " – " + turnoElegido : ""}</strong>.
-                  Recuerda que si confirmas contamos contigo.
-                </span>
-              </div>
-
-              <label className="input-label">Número de teléfono</label>
-              <p className="input-hint">Teléfono registrado en tu aplicación Zubale</p>
-
-              <div className="phone-input-wrap">
-                <span className="phone-prefix">569</span>
-                <input
-                  ref={inputRef}
-                  type="tel"
-                  inputMode="numeric"
-                  className="phone-input"
-                  placeholder="XXXX XXXX"
-                  value={phone}
-                  onChange={handlePhone}
-                  onKeyDown={(e) => e.key === "Enter" && isValid && handleSubmit()}
-                />
-              </div>
-
-              <button className="btn-submit" onClick={handleSubmit} disabled={!isValid || submitting}>
-                {submitting ? "⏳ Enviando..." : "✅ Confirmar asistencia"}
-              </button>
-              <button className="btn-cancel" style={{marginTop:10}}
-                onClick={() => { setFechaElegida(null); setTurnoElegido(null); }}>
-                ← Cambiar fecha
-              </button>
-            </>
-          )}
-
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Toast({ store }) {
-  return (
-    <div className="toast">
-      <div className="toast-icon">🎉</div>
-      <div className="toast-title">¡Ya hemos recibido tu solicitud de Agendamiento!</div>
-      <div className="toast-msg">
-        Durante el día te confirmaremos mediante un mensaje que tu reserva quedó realizada.
-        Recuerda que una vez confirmado contaremos contigo <strong>{store.name}</strong> para sumar ganancias.
-      </div>
-    </div>
-  );
-}
-
-/* ─── CACHÉ EN MEMORIA (dura lo que dura la sesión) ─────────────── */
-let _storesCache = null;
-
-/* ─── SKELETON de 8 tarjetas mientras carga ─────────────────────── */
-function SkeletonGrid() {
-  return (
-    <div>
-      <div style={{ display:"flex", alignItems:"center", marginBottom:6 }}>
-        <div className="skeleton-block" style={{ width:220, height:22, borderRadius:6 }} />
-        <div className="skeleton-block" style={{ width:80, height:22, borderRadius:99, marginLeft:10 }} />
-      </div>
-      <div className="skeleton-block" style={{ width:280, height:16, borderRadius:6, marginBottom:24 }} />
-      <div className="cards-grid">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="skeleton-card">
-            <div className="skeleton-block" style={{ width:56, height:56, borderRadius:14 }} />
-            <div className="skeleton-block" style={{ width:"80%", height:14, borderRadius:6 }} />
-            <div className="skeleton-block" style={{ width:"50%", height:12, borderRadius:6 }} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ─── APP PRINCIPAL ──────────────────────────────────────────────── */
-function App() {
-  const [role, setRole]           = useState("Picker");
-  const [selected, setSelected]   = useState(null);
-  const [toast, setToast]         = useState(null);
-  const [allStores, setAllStores] = useState(_storesCache); // usa caché si existe
-  const [loadError, setLoadError] = useState(false);
-
-  /* Cargar locales — solo si no hay caché */
-  useEffect(() => {
-    if (_storesCache) return; // ya tenemos datos, no vuelve a pedir
-    fetch(GAS_URL + "?action=getLocales")
-      .then(r => r.json())
-      .then(data => {
-        if (data.status === "ok") {
-          _storesCache = data.locales; // guardar en caché
-          setAllStores(data.locales);
-        } else {
-          setLoadError(true);
-        }
-      })
-      .catch(() => setLoadError(true));
-  }, []);
-
-  /* Construir lista de tarjetas para el rol activo */
-  const clientesDelRol = allStores ? (allStores[role] || {}) : {};
-  const totalLocales   = Object.values(clientesDelRol).reduce((s, localesObj) => {
-    return s + (Array.isArray(localesObj) ? localesObj.length : Object.keys(localesObj).length);
-  }, 0);
-
-  const handleSelect = (store) => setSelected(store);
-  const handleClose  = () => setSelected(null);
-
-  const handleSubmit = (store) => {
-    setSelected(null);
-    setToast(store);
-    setTimeout(() => setToast(null), 10000);
+  const handleConfirm = () => {
+    if (!selected) return;
+    if (selected.turnos && selected.turnos.length > 0 && !turno) return;
+    onSelect({
+      local:         selected.local,
+      fecha:         selected.fecha,
+      brand:         selected.brand,
+      rol:           activeRole,
+      turno:         turno || "",
+      nombre
+    });
   };
 
   return (
     <>
-      <Header />
-
-      {/* HERO + ROLE SELECTOR — siempre visible de inmediato */}
-      <section className="hero">
-        <h1>Selecciona tu rol y local</h1>
-        <p>Selecciona tu rol y escoge el local donde tienes disponibilidad de asistir. ¡Confirma con tu número y empieza a ganar!</p>
-
-        <div className="role-selector">
-          {["Picker", "Shopper", "Driver"].map(r => (
-            <button
-              key={r}
-              className={`role-btn ${role === r ? "active" : ""}`}
-              onClick={() => { setRole(r); setSelected(null); }}
-            >
-              {r}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* CARDS */}
-      <main className="main">
-
-        {/* Error */}
-        {loadError && (
-          <div className="empty">
-            <div className="empty-icon">⚠️</div>
-            <div className="empty-title">No pudimos cargar los locales</div>
-            <div className="empty-text">Revisa tu conexión e intenta recargar la página.</div>
+      {/* Hero con nombre + selector de rol */}
+      <div className="hero">
+        <div className="welcome-badge">✅ Bienvenid@, {nombre}</div>
+        <h1>Selecciona tu sala</h1>
+        <p>Elige el local y fecha en que asistirás.</p>
+        {roles.length > 1 && (
+          <div className="role-selector" style={{paddingTop: 20}}>
+            {roles.map(r => (
+              <button
+                key={r}
+                className={`role-btn${activeRole === r ? " active" : ""}`}
+                onClick={() => { setActiveRole(r); setSelected(null); setTurno(null); }}
+              >
+                <span className="role-icon">{ROLE_ICONS[r] || "👤"}</span> {r}
+              </button>
+            ))}
           </div>
         )}
+      </div>
 
-        {/* Skeleton mientras carga */}
-        {!allStores && !loadError && <SkeletonGrid />}
-
-        {/* Contenido real */}
-        {allStores && (
-          <>
-        <div style={{ display: "flex", alignItems: "center", marginBottom: 6 }}>
-          <span className="section-title">Locales disponibles para ti</span>
-        </div>
-        <p className="section-sub">
-          Selecciona el local donde quieres asistir como <strong>{role}</strong>.
-        </p>
-
-        {totalLocales > 0 ? (
-          Object.entries(clientesDelRol).map(([cliente, localesObj]) => {
-            // Compatible con formato viejo (array) y nuevo (objeto con fechas)
-            const esArray = Array.isArray(localesObj);
-            const nombresLocales = esArray ? localesObj : Object.keys(localesObj);
-            return (
-            <div key={cliente} className="client-group">
-              <div className="client-header">
-                <span className="client-label">{cliente}</span>
-                <div className="client-divider" />
-                <span className="client-count">{nombresLocales.length} {nombresLocales.length === 1 ? "local" : "locales"}</span>
-              </div>
+      <div className="main">
+        {clientes.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-state-icon">🗓️</div>
+            <div className="empty-state-text">Sin salas disponibles</div>
+            <div className="empty-state-sub">No hay fechas habilitadas para tu rol en este momento.</div>
+          </div>
+        ) : clientes.map(brand => {
+          const stores = locales[activeRole][brand] || {};
+          return (
+            <div key={brand} style={{marginBottom: 36}}>
+              <h2 className="section-title">{storeIcon(brand)} {brand}</h2>
+              <p className="section-sub">Selecciona el local y fecha disponible</p>
               <div className="cards-grid">
-                {nombresLocales.map((nombre, idx) => (
-                  <StoreCard
-                    key={idx}
-                    store={{ id: idx, name: nombre, emoji: ROLE_EMOJI[role] || "🏪", cliente, fechas: esArray ? {} : (localesObj[nombre] || {}) }}
-                    onSelect={handleSelect}
-                  />
-                ))}
-              </div>
-              <div className="client-reminder">
-                📌 Recuerda que para seleccionar una sala de <strong>{cliente}</strong>, es importante que te encuentres previamente <strong>capacitado</strong>.
+                {Object.keys(stores).map(local => {
+                  const fechas = stores[local];
+                  return (
+                    <div className="store-card" key={local}>
+                      <div className="store-icon-wrap">
+                        <span>{storeIcon(brand)}</span>
+                      </div>
+                      <div className="store-name">{local}</div>
+                      <span className="store-tag">{brand}</span>
+                      <div className="store-dates">
+                        {Object.keys(fechas).map(fecha => {
+                          const yaRegistrado = fechasRegistradas.includes(fecha);
+                          return (
+                            <button
+                              key={fecha}
+                              className={`date-chip${yaRegistrado ? " disabled" : ""}`}
+                              title={yaRegistrado ? "Ya tienes registro para esta fecha" : ""}
+                              onClick={() => handleDateClick(local, fecha, brand, fechas[fecha])}
+                              disabled={yaRegistrado}
+                            >
+                              {yaRegistrado ? "🔒 " : "📅 "}{fecha}
+                              {yaRegistrado ? " (ya agendado)" : ""}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            );
-          })
-        ) : (
-          <div className="empty">
-            <div className="empty-icon">🔍</div>
-            <div className="empty-title">Sin locales disponibles hoy</div>
-            <div className="empty-text">Por ahora no hay salas disponibles para <strong>{role}</strong> hoy. Volvé a intentarlo más tarde.</div>
+          );
+        })}
+      </div>
+
+      {/* Modal de confirmación cuando se elige local + fecha */}
+      {selected && (
+        <div className="overlay" onClick={e => { if (e.target === e.currentTarget) { setSelected(null); setTurno(null); } }}>
+          <div className="modal">
+            <div className="modal-header">
+              <div className="modal-store-icon">{storeIcon(selected.brand)}</div>
+              <div className="modal-title">{selected.local}</div>
+              <div className="modal-subtitle">{activeRole} · {selected.brand}</div>
+            </div>
+            <div className="modal-body">
+              <div className="detail-row">
+                <span className="detail-label">Nombre</span>
+                <span className="detail-value">{nombre}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Fecha</span>
+                <span className="detail-value">📅 {selected.fecha}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Rol</span>
+                <span className="detail-value">{ROLE_ICONS[activeRole] || "👤"} {activeRole}</span>
+              </div>
+              {selected.turnos && selected.turnos.length > 0 && (
+                <div className="detail-row" style={{flexDirection: "column", alignItems: "flex-start", gap: 10}}>
+                  <span className="detail-label">Turno</span>
+                  <div className="turno-row">
+                    {selected.turnos.map(t => (
+                      <button
+                        key={t}
+                        className={`turno-chip${turno === t ? " active" : ""}`}
+                        onClick={() => setTurno(t)}
+                      >{t}</button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="modal-actions">
+              <button className="btn-cancel" onClick={() => { setSelected(null); setTurno(null); }}>Cancelar</button>
+              <button
+                className="btn-confirm"
+                onClick={handleConfirm}
+                disabled={selected.turnos && selected.turnos.length > 0 && !turno}
+              >
+                Confirmar registro ✓
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FASE 3 — Pantalla de éxito
+═══════════════════════════════════════════════════════════ */
+function SuccessScreen({ booking, onNew }) {
+  return (
+    <div className="success-wrap">
+      <div className="success-icon">✅</div>
+      <h2 className="success-title">¡Registro exitoso!</h2>
+      <p className="success-sub">Tu asistencia ha sido agendada correctamente. Nos vemos en la sala.</p>
+      <div className="success-card">
+        <div className="success-card-row">
+          <span className="success-card-label">Nombre</span>
+          <span className="success-card-value">{booking.nombre}</span>
+        </div>
+        <div className="success-card-row">
+          <span className="success-card-label">Local</span>
+          <span className="success-card-value">{booking.local}</span>
+        </div>
+        <div className="success-card-row">
+          <span className="success-card-label">Fecha</span>
+          <span className="success-card-value">{booking.fecha}</span>
+        </div>
+        <div className="success-card-row">
+          <span className="success-card-label">Rol</span>
+          <span className="success-card-value">{booking.rol}</span>
+        </div>
+        {booking.turno && (
+          <div className="success-card-row">
+            <span className="success-card-label">Turno</span>
+            <span className="success-card-value">{booking.turno}</span>
           </div>
         )}
-          </>
-        )}
-      </main>
+        <div className="success-card-row">
+          <span className="success-card-label">Brand</span>
+          <span className="success-card-value">{booking.brand}</span>
+        </div>
+      </div>
+      <button className="btn-new" onClick={onNew}>Registrar otra persona</button>
+    </div>
+  );
+}
 
-      <footer className="footer">
-        © 2025 Zubale
-      </footer>
+/* ═══════════════════════════════════════════════════════════
+   APP ROOT
+═══════════════════════════════════════════════════════════ */
+function App() {
+  const [phase, setPhase]       = useState("phone");   // "phone" | "stores" | "success"
+  const [userData, setUserData] = useState(null);
+  const [booking, setBooking]   = useState(null);
+  const [toast, setToast]       = useState(null);
+  const [sending, setSending]   = useState(false);
+  const phoneRef                = useRef("");
 
-      {/* MODAL */}
-      {selected && (
-        <Modal
-          store={selected}
-          role={role}
-          onClose={handleClose}
-          onSubmit={handleSubmit}
+  const showToast = (msg, type = "info") => setToast({ msg, type });
+
+  const handleValidated = (data) => {
+    phoneRef.current = data.telefono;
+    setUserData(data);
+    setPhase("stores");
+  };
+
+  const handleSelect = async (selection) => {
+    if (sending) return;
+    setSending(true);
+    const payload = {
+      telefono:    phoneRef.current,
+      local:       selection.local,
+      rol:         selection.rol,
+      cliente:     selection.brand,
+      fechaElegida: selection.fecha,
+      turno:       selection.turno
+    };
+    try {
+      const res = await fetch(GAS_SUPPLY_BD_URL, {
+        method:  "POST",
+        headers: { "Content-Type": "text/plain" },
+        body:    JSON.stringify(payload),
+        mode:    "no-cors"
+      });
+      // Con no-cors no podemos leer el response, asumimos ok
+      setBooking({ ...selection, telefono: phoneRef.current });
+      setPhase("success");
+    } catch (err) {
+      showToast("Error al guardar. Intenta nuevamente.", "error");
+    }
+    setSending(false);
+  };
+
+  const handleNew = () => {
+    setPhase("phone"); setUserData(null); setBooking(null);
+    phoneRef.current = "";
+  };
+
+  return (
+    <>
+      {/* Header */}
+      <header className="header">
+        <div className="header-logo">
+          <img
+            src="https://www.zubale.com/cl/wp-content/uploads/2023/12/logo_zubale_2023.png"
+            alt="Zubale"
+            style={{height:"32px", width:"auto", display:"block"}}
+          />
+        </div>
+      </header>
+
+      {/* Fases */}
+      {phase === "phone" && (
+        <PhoneGate onValidated={handleValidated} />
+      )}
+
+      {phase === "stores" && userData && (
+        <StoreSelector
+          userData={userData}
+          onSelect={handleSelect}
         />
       )}
 
-      {/* TOAST */}
-      {toast && <Toast store={toast} />}
+      {phase === "success" && booking && (
+        <SuccessScreen booking={booking} onNew={handleNew} />
+      )}
+
+      {/* Overlay enviando */}
+      {sending && (
+        <div className="overlay">
+          <div style={{textAlign:"center", color:"#fff"}}>
+            <div className="spinner" style={{width:40, height:40, borderWidth:4, margin:"0 auto 16px"}}/>
+            <div style={{fontWeight:700, fontSize:16}}>Guardando registro...</div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast */}
+      {toast && <Toast msg={toast.msg} type={toast.type} onDone={() => setToast(null)} />}
     </>
   );
 }
