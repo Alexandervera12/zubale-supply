@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Zubale Supply – Registro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
@@ -30,11 +33,12 @@
 
     html, body {
       height: 100%;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Lexend', 'Segoe UI', system-ui, -apple-system, sans-serif;
       background: var(--zubale-gray);
       color: var(--zubale-text);
     }
     #root { min-height: 100vh; }
+    input, button, select, textarea { font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; }
 
     /* ──── HEADER ──────────────────────────────────────── */
     .header {
@@ -434,7 +438,7 @@
 const { useState, useEffect, useCallback, useRef } = React;
 
 /* ── URL del nuevo GAS (supply-bd) ─────────────────────────── */
-const GAS_SUPPLY_BD_URL = "https://script.google.com/macros/s/AKfycbzqHnM4KVPz9tBJnsMLWrExjWydyOZ4Mcix4qAVFZ0B7-AjLzFYtP4vNKJtlKi3iqY/exec";
+const GAS_SUPPLY_BD_URL = "https://script.google.com/macros/s/AKfycbx2Sz0uDZrX1RHRuL_cqOZGNhzmvkesFtvpBTx98KzDErg7MZjoC68C63D5bt1FLRw/exec";
 
 /* ── Helpers ────────────────────────────────────────────────── */
 const STORE_ICONS = {
