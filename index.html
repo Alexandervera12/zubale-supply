@@ -425,6 +425,23 @@ function NotFoundScreen({ digits, onRetry }) {
   );
 }
 
+/* ════════ BLOCKED — idéntica a BD ════════ */
+function BlockedScreen({ onRetry }) {
+  return (
+    <div className="fullscreen-center">
+      <div className="status-card">
+        <div className="status-icon">🚫</div>
+        <div className="status-title">Sin citas disponibles</div>
+        <p className="status-text">
+          No tenemos citas disponibles para ti.<br/><br/>
+          Vuelve a intentarlo más tarde.
+        </p>
+        <button className="btn-primary" onClick={onRetry}>Volver</button>
+      </div>
+    </div>
+  );
+}
+
 /* ════════ ERROR — idéntica a BD ════════ */
 function ErrorScreen({ onRetry }) {
   return (
@@ -595,7 +612,7 @@ function Toast({ store, fecha }) {
 
 /* ════════ APP ════════ */
 function App() {
-  // "phone" | "loading" | "results" | "not_found" | "error"
+  // "phone" | "loading" | "results" | "not_found" | "blocked" | "error"
   const [phase, setPhase]               = useState("phone");
   const [digits, setDigits]             = useState("");
   const [userInfo, setUserInfo]         = useState(null);   // { rol, nombre }
@@ -612,12 +629,14 @@ function App() {
         .then(r => r.json());
 
       if (res.status === "ok") {
-        setUserInfo({ rol: res.nombre ? Object.keys(res.locales||{})[0] : null, nombre: res.nombre, localesData: res.locales });
+        setUserInfo({ nombre: res.nombre });
         setLocales(res.locales || {});
         setFechas(res.fechasRegistradas || []);
         setPhase("results");
       } else if (res.status === "not_found") {
         setPhase("not_found");
+      } else if (res.status === "blocked") {
+        setPhase("blocked");
       } else {
         setPhase("error");
       }
@@ -651,12 +670,13 @@ function App() {
       {phase === "loading"   && <LoadingScreen />}
       {phase === "not_found" && <NotFoundScreen digits={digits} onRetry={handleRetry} />}
       {phase === "error"     && <ErrorScreen onRetry={handleRetry} />}
+      {phase === "blocked"   && <BlockedScreen onRetry={handleRetry} />}
 
       {phase === "results" && (
         <>
           <section className="hero">
-            <h1>Salas disponibles para ti hoy</h1>
-            <p>Como <strong>{rol}</strong> en <strong>{clientes.join(", ")}</strong>, estas son tus opciones.</p>
+            <h1>Como <strong>{rol}</strong> en <strong>{clientes.join(", ")}</strong></h1>
+            <p>Estas son tus opciones disponibles.</p>
           </section>
           <main className="main">
             {clientes.length === 0 ? (
