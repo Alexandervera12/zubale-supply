@@ -182,20 +182,25 @@
     .store-card:hover .store-emoji { filter: brightness(0) invert(1); }
     .store-name { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.3; }
 
-    /* ── DATE CHIPS ── */
-    .date-chips { display: flex; flex-direction: column; gap: 5px; width: 100%; }
-    .date-chip {
-      font-size: 12px; font-weight: 600;
-      padding: 5px 10px; border-radius: 8px;
+    .store-cta { font-size: 12px; color: var(--blue); font-weight: 600; }
+
+    /* ── DATE CHIPS en modal ── */
+    .fecha-group { margin-bottom: 14px; }
+    .fecha-titulo { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .fecha-chips  { display: flex; flex-direction: column; gap: 6px; }
+    .fecha-chip {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; border-radius: 10px;
       background: var(--blue-light); color: var(--blue);
-      cursor: pointer; border: 1px solid #BFDBFE;
+      cursor: pointer; border: 1.5px solid #BFDBFE;
+      font-size: 13px; font-weight: 600;
       transition: all 0.15s; font-family: inherit;
     }
-    .date-chip:hover:not(.taken) { background: var(--blue); color: #fff; border-color: var(--blue); }
-    .date-chip.taken {
+    .fecha-chip:hover:not(.taken) { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .fecha-chip.selected { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .fecha-chip.taken {
       background: var(--gray2); color: var(--muted);
-      cursor: not-allowed; border-color: var(--gray2);
-      text-decoration: line-through; opacity: 0.7;
+      cursor: not-allowed; border-color: var(--gray2); opacity: 0.7;
     }
 
     /* ── EMPTY ── */
@@ -456,11 +461,12 @@ function SkeletonGrid() {
   );
 }
 
-/* ════════ MODAL SUPPLY — con fecha + turno ════════ */
-function ModalSupply({ store, fecha, turnos, userInfo, digits, fechasRegistradas, onClose, onSubmit }) {
-  const [turno, setTurno]         = useState(turnos && turnos.length === 1 ? turnos[0] : null);
+/* ════════ MODAL SUPPLY — selección fecha → turno → confirmar ════════ */
+function ModalSupply({ store, userInfo, digits, fechasRegistradas, onClose, onSubmit }) {
+  // store.fechas = { "05/04/2026": ["Mañana","Tarde"], ... }
+  const [fechaSel, setFechaSel]   = useState(null);
+  const [turno, setTurno]         = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const needsTurno = turnos && turnos.length > 0;
 
   useEffect(() => {
     const handleKey = (e) => { if (e.key === "Escape") onClose(); };
@@ -468,8 +474,22 @@ function ModalSupply({ store, fecha, turnos, userInfo, digits, fechasRegistradas
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
+  const fechas       = Object.keys(store.fechas || {});
+  const turnosDisp   = fechaSel ? (store.fechas[fechaSel] || []) : [];
+  const needsTurno   = turnosDisp.length > 0;
+  const canConfirm   = fechaSel && (!needsTurno || turno);
+
+  const handleSelectFecha = (f) => {
+    if (fechasRegistradas.includes(f)) return;
+    setFechaSel(f);
+    setTurno(null);
+    // Auto-seleccionar si solo hay 1 turno
+    const t = store.fechas[f] || [];
+    if (t.length === 1) setTurno(t[0]);
+  };
+
   const handleConfirm = async () => {
-    if (needsTurno && !turno) return;
+    if (!canConfirm) return;
     setSubmitting(true);
     try {
       await fetch(GAS_URL, {
@@ -482,13 +502,13 @@ function ModalSupply({ store, fecha, turnos, userInfo, digits, fechasRegistradas
           telefono:     "569" + digits,
           rol:          userInfo.rol,
           cliente:      store.cliente,
-          fechaElegida: fecha,
+          fechaElegida: fechaSel,
           turno:        turno || "–"
         })
       });
     } catch(e) { console.warn("Error:", e.message); }
     setSubmitting(false);
-    onSubmit(store, fecha, turno);
+    onSubmit(store, fechaSel, turno);
   };
 
   return (
@@ -500,28 +520,57 @@ function ModalSupply({ store, fecha, turnos, userInfo, digits, fechasRegistradas
           <div className="modal-subtitle">{userInfo.rol} · {store.cliente}</div>
         </div>
         <div className="modal-body">
-          <div className="warn-box" style={{ marginBottom:0 }}>
-            <span className="warn-box-icon">📋</span>
-            <span className="warn-box-text">
-              Al confirmar quedará registrada tu asistencia en <strong>{store.name}</strong> el día <strong>{fecha}</strong>. Asegúrate de poder asistir.
-            </span>
+          {/* PASO 1: Seleccionar fecha */}
+          <div className="fecha-group">
+            <div className="fecha-titulo">📅 Selecciona una fecha:</div>
+            <div className="fecha-chips">
+              {fechas.map(f => {
+                const taken = fechasRegistradas.includes(f);
+                return (
+                  <button
+                    key={f}
+                    className={`fecha-chip${taken?" taken":fechaSel===f?" selected":""}`}
+                    onClick={() => handleSelectFecha(f)}
+                    disabled={taken}
+                  >
+                    <span>{taken ? "🔒" : fechaSel===f ? "✓" : "📅"} {f}</span>
+                    {taken && <span style={{fontSize:11}}>Ya agendado</span>}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-          <div className="confirm-detail">
-            <strong>{userInfo.rol}</strong> · <strong>{store.cliente}</strong><br/>
-            Teléfono: <strong>569{digits}</strong><br/>
-            Fecha: <strong>{fecha}</strong>
-          </div>
-          {needsTurno && (
-            <>
-              <div className="turno-label">Selecciona turno:</div>
+
+          {/* PASO 2: Seleccionar turno (si aplica) */}
+          {fechaSel && needsTurno && (
+            <div style={{marginBottom:16}}>
+              <div className="turno-label">🕐 Selecciona turno:</div>
               <div className="turno-row">
-                {turnos.map(t => (
+                {turnosDisp.map(t => (
                   <button key={t} className={`turno-btn${turno===t?" active":""}`} onClick={()=>setTurno(t)}>{t}</button>
                 ))}
               </div>
-            </>
+            </div>
           )}
-          <button className="btn-primary" onClick={handleConfirm} disabled={submitting || (needsTurno && !turno)}>
+
+          {/* Resumen cuando hay fecha seleccionada */}
+          {fechaSel && (
+            <div className="confirm-detail">
+              <strong>{userInfo.rol}</strong> · <strong>{store.cliente}</strong><br/>
+              Teléfono: <strong>569{digits}</strong><br/>
+              Fecha: <strong>{fechaSel}</strong>
+              {turno && <><br/>Turno: <strong>{turno}</strong></>}
+            </div>
+          )}
+
+          <div className="warn-box" style={{marginBottom:16}}>
+            <span className="warn-box-icon">📋</span>
+            <span className="warn-box-text">
+              Al confirmar quedará registrada tu asistencia en <strong>{store.name}</strong>. Asegúrate de poder asistir.
+            </span>
+          </div>
+
+          <button className="btn-primary" onClick={handleConfirm} disabled={submitting || !canConfirm}>
             {submitting ? "⏳ Enviando..." : "✓ Confirmar asistencia"}
           </button>
           <button className="btn-secondary" onClick={onClose}>Cancelar</button>
@@ -606,8 +655,8 @@ function App() {
       {phase === "results" && (
         <>
           <section className="hero">
-            <h1>Salas disponibles para ti</h1>
-            <p>Hola <strong>{userInfo?.nombre}</strong>, como <strong>{rol}</strong> estas son tus opciones.</p>
+            <h1>Salas disponibles para ti hoy</h1>
+            <p>Como <strong>{rol}</strong> en <strong>{clientes.join(", ")}</strong>, estas son tus opciones.</p>
           </section>
           <main className="main">
             {clientes.length === 0 ? (
@@ -627,31 +676,23 @@ function App() {
                   <div className="cards-grid">
                     {Object.keys(stores).map(storeName => {
                       const fechas = stores[storeName];
+                      const todasTomadas = Object.keys(fechas).every(f => fechasRegistradas.includes(f));
                       return (
-                        <div className="store-card" key={storeName}>
+                        <div
+                          className="store-card"
+                          key={storeName}
+                          style={todasTomadas ? {opacity:0.5, cursor:"not-allowed"} : {}}
+                          onClick={() => !todasTomadas && setSelected({
+                            name: storeName, emoji: getEmoji(cliente), cliente, fechas
+                          })}
+                        >
                           <div className="store-icon-wrap">
                             <span className="store-emoji">{getEmoji(cliente)}</span>
                           </div>
                           <div className="store-name">{storeName}</div>
-                          <div className="date-chips">
-                            {Object.keys(fechas).map(fecha => {
-                              const taken = fechasRegistradas.includes(fecha);
-                              return (
-                                <button
-                                  key={fecha}
-                                  className={`date-chip${taken?" taken":""}`}
-                                  disabled={taken}
-                                  onClick={() => !taken && setSelected({
-                                    store: { name: storeName, emoji: getEmoji(cliente), cliente },
-                                    fecha,
-                                    turnos: fechas[fecha]
-                                  })}
-                                >
-                                  {taken ? "🔒 " : "📅 "}{fecha}
-                                </button>
-                              );
-                            })}
-                          </div>
+                          <span className="store-cta">
+                            {todasTomadas ? "🔒 Ya agendado" : "Reservar →"}
+                          </span>
                         </div>
                       );
                     })}
@@ -672,10 +713,8 @@ function App() {
 
       {selected && (
         <ModalSupply
-          store={selected.store}
-          fecha={selected.fecha}
-          turnos={selected.turnos}
-          userInfo={{ rol, nombre: userInfo?.nombre }}
+          store={selected}
+          userInfo={{ rol }}
           digits={digits}
           fechasRegistradas={fechasRegistradas}
           onClose={() => setSelected(null)}
