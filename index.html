@@ -356,7 +356,7 @@ function PhoneScreen({ onSubmit }) {
           />
         </div>
         <h1 className="phone-card-title">Ingresa tu número de teléfono registrado</h1>
-        <p className="phone-card-sub">Te mostraremos las salas disponibles para HOY</p>
+        <p className="phone-card-sub">Te mostraremos las salas disponibles</p>
         <div className="phone-input-wrap">
           <span className="phone-prefix">569</span>
           <input
@@ -583,7 +583,7 @@ function ModalSupply({ store, userInfo, digits, fechasRegistradas, onClose, onSu
           <div className="warn-box" style={{marginBottom:16}}>
             <span className="warn-box-icon">📋</span>
             <span className="warn-box-text">
-              Al confirmar quedará registrada tu asistencia en <strong>{store.name}</strong>. Asegúrate de poder asistir.
+              Al confirmar quedará registrada tu disponibilidad en <strong>{store.name}</strong>. Asegúrate de poder asistir.
             </span>
           </div>
 
@@ -604,7 +604,7 @@ function Toast({ store, fecha }) {
       <div className="toast-icon">✅</div>
       <div className="toast-title">¡Tu registro fue enviado!</div>
       <div className="toast-msg">
-        Tu disponibilidad en <strong>{store.name}</strong> el <strong>{fecha}</strong> quedó registrada. ¡Prepárate para asistir!
+        Tu disponibilidad en <strong>{store.name}</strong> el <strong>{fecha}</strong> quedó registrada. Te confirmaremos por Whatsapp que tu registro está listo ¡Prepárate para asistir!
       </div>
     </div>
   );
@@ -727,7 +727,7 @@ function App() {
               </span>
             </div>
           </main>
-          <footer className="footer">© 2025 Zubale</footer>
+          <footer className="footer">© 2026 Zubale</footer>
         </>
       )}
 
